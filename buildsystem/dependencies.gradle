@@ -1,0 +1,98 @@
+ext.versions = [
+
+        // Libraries
+        androidSupport      : '25.2.0',
+        anko                : '0.9',
+        timber              : '4.5.1',
+        butterKnife         : '8.4.0',
+        rx                  : '1.2.10',
+        rxAndroid           : '1.2.1',
+        gson                : '2.8.0',
+        dagger              : '2.10',
+        glide               : '3.7.0',
+        easymvp             : '1.1.1',
+        retrofit            : '2.2.0',
+        permDispatcher      : '2.3.2',
+
+        // Development
+        leakCanary          : '1.5.1',
+
+        // Gradle Plugins
+        androidGradlePlugin : '2.3.0',
+        kotlinGradlePlugin  : '1.1.2',
+
+        // Test
+        junit               : '4.12',
+        espresso            : '2.2.2',
+        mockito             : '1.10.19',
+        powerMockito        : '1.6.2',
+        hamcrest            : '1.3',
+        runner              : '0.5',
+        rules               : '0.5'
+
+]
+
+ext.libraries = [
+
+        // Normal
+        appCompatV7         : "com.android.support:appcompat-v7:$versions.androidSupport",
+        cardViewV7          : "com.android.support:cardview-v7:$versions.androidSupport",
+        recyclerViewV7      : "com.android.support:recyclerview-v7:$versions.androidSupport",
+        appDesign           : "com.android.support:design:$versions.androidSupport",
+        supportV4           : "com.android.support:support-v4:$versions.androidSupport",
+        timber              : "com.jakewharton.timber:timber:$versions.timber",
+        butterKnife         : "com.jakewharton:butterknife:$versions.butterKnife",
+        butterKnifeCompiler : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
+        rxJava              : "io.reactivex:rxjava:$versions.rx",
+        rxAndroid           : "io.reactivex:rxandroid:$versions.rxAndroid",
+        gson                : "com.google.code.gson:gson:$versions.gson",
+        dagger              : "com.google.dagger:dagger:$versions.dagger",
+        daggerCompiler      : "com.google.dagger:dagger-compiler:$versions.dagger",
+        glide               : "com.github.bumptech.glide:glide:$versions.glide",
+        retrofit            : "com.squareup.retrofit2:retrofit:$versions.retrofit",
+        retrofitConverter   : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
+        retrofitAdapter     : "com.squareup.retrofit2:adapter-rxjava:$versions.retrofit",
+        supportAnnotations  : "com.android.support:support-annotations:$versions.androidSupport",
+        permDispatcherApt   : "com.github.hotchemi:permissionsdispatcher-processor:$versions.permDispatcher",
+        permDispatcher      : "com.github.hotchemi:permissionsdispatcher:$versions.permDispatcher",
+
+        // Development
+        leakCanaryDebug     : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",
+        leakCanaryRelease   : "com.squareup.leakcanary:leakcanary-android-no-op:${versions.leakCanary}",
+
+        // Kotlin Libraries
+        ankoCommon          : "org.jetbrains.anko:anko-common:$versions.anko",
+        ankoSqlite          : "org.jetbrains.anko:anko-sqlite:$versions.anko",
+        kotlinStdLib        : "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlinGradlePlugin",
+
+        // Test
+        junit               : "junit:junit:$versions.junit",
+        mockito             : "org.mockito:mockito-all:$versions.mockito",
+        hamcrest            : "org.hamcrest:hamcrest-all:$versions.hamcrest",
+        powermockJunit      : "org.powermock:powermock-module-junit4:$versions.powerMockito",
+        powermockMockito    : "org.powermock:powermock-api-mockito:$versions.powerMockito",
+        espressoCore        : "com.android.support.test.espresso:espresso-core:$versions.espresso",
+        espressoContrib     : "com.android.support.test.espresso:espresso-contrib:$versions.espresso",
+        espressoIntents     : "com.android.support.test.espresso:espresso-intents:$versions.espresso",
+        espressoIdling      : "com.android.support.test.espresso:espresso-idling-resource:$versions.espresso",
+        androidTestRunner   : "com.android.support.test:runner:$versions.androidTest",
+        androidTestRules    : "com.android.support.test:rules:$versions.androidTest",
+
+]
+
+ext.gradlePlugins = [
+        android             : "com.android.tools.build:gradle:$versions.androidGradlePlugin",
+        easymvp             : "com.sixthsolution.easymvp:easymvp-plugin:$versions.easymvp",
+        kotlin              : "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlinGradlePlugin",
+        kotlinExtensions    : "org.jetbrains.kotlin:kotlin-android-extensions:$versions.kotlinGradlePlugin"
+]
+
+ext.cleantvmaze = [
+        applicationId: "com.mohamadamin.cleantvmaze",
+        compileSdk   : 25,
+        buildTools   : '25.0.2',
+        minSdk       : 15,
+        targetSdk    : 25,
+        versionCode  : 1,
+        versionName  : '1.0.0-beta1'
+]
