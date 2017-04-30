@@ -3,33 +3,35 @@ package com.mohamadamin.domain.entity
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-data class Country(var name: String, var code: String, var timezone: String)
+data class Country(val name: String, val code: String, val timezone: String)
 
-data class ShowImageUrl(var medium: String, var original: String)
+data class ShowImageUrl(val medium: String, val original: String)
 
-data class ShowUrl(var href: String)
+data class ShowUrl(val href: String)
 
-data class ShowLink(var self: ShowUrl, var previousEpisode: ShowUrl)
+data class ShowLink(val self: ShowUrl, val previousEpisode: ShowUrl)
 
-data class ShowRating (var average: Double)
+data class ShowRating (val average: Double)
 
-data class Person(var id: Int, var name: String, var image: ShowImageUrl)
+data class Person(val id: Int, val name: String, val image: ShowImageUrl)
 
-data class Producer(var id: Int, var name: String, var country: Country)
+data class People(var score: Double, var person: Person)
 
-data class Schedule(var time: String, var days: List<String>)
+data class Producer(val id: Int, val name: String, val country: Country)
 
-data class Season(var id: Int, var season: Int, var number: Int, 
-                  var runtime: Int, var url: String, var name: String, var airdate: String, 
-                  var airtime: String, var airstamp: String, var summary: String, var image: ShowImageUrl)
+data class Schedule(val time: String, val days: List<String>)
 
-data class Episode(var id: Int, var season: Int, var number: Int,
-            var runtime: Int, var url: String, var name: String, var airdate: String,
-            var airtime: String, var airstamp: String, var summary: String, var image: ShowImageUrl)
+data class Season(val id: Int, val season: Int, val number: Int, 
+                  val runtime: Int, val url: String, val name: String, val airdate: String, 
+                  val airtime: String, val airstamp: String, val summary: String, val image: ShowImageUrl)
 
-data class Show(var updated: Long, var links: ShowLink, var network: Producer, 
-                var schedule: Schedule, var rating: ShowRating, var image: ShowImageUrl, 
-                var genres: List<String>, var id: Int, var runtime: Int, var weight: Int, 
-                var url: String, var name: String, var type: String, var language: String, 
-                var status: String, var premiered: String, var webChannel: String, var summary: String)
+data class Episode(val id: Int, val season: Int, val number: Int,
+            val runtime: Int, val url: String, val name: String, val airdate: String,
+            val airtime: String, val airstamp: String, val summary: String, val image: ShowImageUrl)
+
+data class Show(val updated: Long, val links: ShowLink, val network: Producer, 
+                val schedule: Schedule, val rating: ShowRating, val image: ShowImageUrl, 
+                val genres: List<String>, val id: Int, val runtime: Int, val weight: Int, 
+                val url: String, val name: String, val type: String, val language: String, 
+                val status: String, val premiered: String, val webChannel: String, val summary: String)
 
