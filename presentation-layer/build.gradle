@@ -90,6 +90,12 @@ dependencies {
     releaseCompile libraries.leakCanaryRelease
     testCompile libraries.leakCanaryRelease
 
+    // Junit
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.hamcrest
+    testCompile libraries.powermockJunit
+    testCompile libraries.powermockMockito
 
     // Android Testing Support Library's runner and rules
     androidTestCompile libraries.androidTestRunner

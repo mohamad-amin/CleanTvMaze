@@ -9,4 +9,10 @@ dependencies {
     compile libraries.gson
     compile libraries.javaxAnnotation
 
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.hamcrest
+    testCompile libraries.powermockJunit
+    testCompile libraries.powermockMockito
+
 }
