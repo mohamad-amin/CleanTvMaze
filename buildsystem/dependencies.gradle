@@ -9,10 +9,12 @@ ext.versions = [
         rxAndroid           : '1.2.1',
         gson                : '2.8.0',
         dagger              : '2.10',
+        javaxAnnotation     : '1.0',
         glide               : '3.7.0',
         easymvp             : '1.1.1',
         retrofit            : '2.2.0',
         permDispatcher      : '2.3.2',
+        constraintLayout    : '1.0.0-alpha7',
 
         // Development
         leakCanary          : '1.5.1',
@@ -40,14 +42,17 @@ ext.libraries = [
         recyclerViewV7      : "com.android.support:recyclerview-v7:$versions.androidSupport",
         appDesign           : "com.android.support:design:$versions.androidSupport",
         supportV4           : "com.android.support:support-v4:$versions.androidSupport",
+        constraintLayout   : "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
         timber              : "com.jakewharton.timber:timber:$versions.timber",
         butterKnife         : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
         rxJava              : "io.reactivex:rxjava:$versions.rx",
         rxAndroid           : "io.reactivex:rxandroid:$versions.rxAndroid",
+        easymvpRxApi        : "com.sixthsolution.easymvp:easymvp-rx-api:$versions.easymvp",
         gson                : "com.google.code.gson:gson:$versions.gson",
         dagger              : "com.google.dagger:dagger:$versions.dagger",
         daggerCompiler      : "com.google.dagger:dagger-compiler:$versions.dagger",
+        javaxAnnotation     : "javax.annotation:jsr250-api:$versions.javaxAnnotation",
         glide               : "com.github.bumptech.glide:glide:$versions.glide",
         retrofit            : "com.squareup.retrofit2:retrofit:$versions.retrofit",
         retrofitConverter   : "com.squareup.retrofit2:converter-gson:$versions.retrofit",
@@ -55,6 +60,7 @@ ext.libraries = [
         supportAnnotations  : "com.android.support:support-annotations:$versions.androidSupport",
         permDispatcherApt   : "com.github.hotchemi:permissionsdispatcher-processor:$versions.permDispatcher",
         permDispatcher      : "com.github.hotchemi:permissionsdispatcher:$versions.permDispatcher",
+
 
         // Development
         leakCanaryDebug     : "com.squareup.leakcanary:leakcanary-android:${versions.leakCanary}",

@@ -1,31 +1,127 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'easymvp'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+
+    compileSdkVersion cleantvmaze.compileSdk
+    buildToolsVersion cleantvmaze.buildTools
+
     defaultConfig {
-        applicationId "com.mohamadamin.cleantvmaze"
-        minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+
+        applicationId cleantvmaze.applicationId
+        minSdkVersion cleantvmaze.minSdk
+        targetSdkVersion cleantvmaze.targetSdk
+        versionCode cleantvmaze.versionCode
+        versionName cleantvmaze.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //Add version name and code to generated apks
+        archivesBaseName = "cleantvmaze-${cleantvmaze.versionName}-${cleantvmaze.versionCode}"
+
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'asm-license.txt'
+    }
+
+    //organizing resource folders
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res/shows',
+                           'src/main/res/showdetail',
+                           'src/main/res'
+            ]
         }
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.findbugs:jsr305:1.3.9', 'com.google.code.findbugs:jsr305:2.0.1'
+    }
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':data-layer-android')
+
+    // Support
+    compile libraries.cardViewV7
+    compile libraries.appDesign
+    compile libraries.recyclerViewV7
+    compile libraries.constraintLayout
+
+    // ButterKnife
+    compile libraries.butterKnife
+    kapt libraries.butterKnifeCompiler
+
+    // Glide
+    compile libraries.glide
+    compile libraries.supportV4
+
+    compile libraries.permDispatcher
+    kapt libraries.permDispatcherApt
+
+    // LeakCanary
+    debugCompile libraries.leakCanaryDebug
+    releaseCompile libraries.leakCanaryRelease
+    testCompile libraries.leakCanaryRelease
+
+
+    // Android Testing Support Library's runner and rules
+    androidTestCompile libraries.androidTestRunner
+    androidTestCompile libraries.androidTestRules
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile(libraries.espressoCore, {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
-    testCompile 'junit:junit:4.12'
+    androidTestCompile libraries.espressoContrib
+    androidTestCompile libraries.espressoIntents
+    androidTestCompile libraries.espressoIdling
+
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$versions.androidSupport"
+}
+
+/*
+All direct/transitive dependencies shared between your test and production APKs need to be
+excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+excluding these dependencies from your test configuration will result in an dex pre-verifier error
+at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)
+*/
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+}
+configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
 }
