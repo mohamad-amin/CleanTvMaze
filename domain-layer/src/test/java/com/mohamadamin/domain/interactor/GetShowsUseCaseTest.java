@@ -2,6 +2,7 @@ package com.mohamadamin.domain.interactor;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.mohamadamin.domain.entity.Show;
 import com.mohamadamin.domain.repository.ShowRepository;
 
@@ -10,11 +11,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import easymvp.executer.PostExecutionThread;
 import easymvp.executer.UseCaseExecutor;
 import rx.Observable;
 import rx.observers.AssertableSubscriber;
 
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,9 +29,9 @@ import static org.mockito.Mockito.when;
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
 
-public class GetShowDetailUseCaseTest {
+public class GetShowsUseCaseTest {
 
-    private static final String SHOW_ID = "showid";
+    private static final int PAGE = 1;
     private static final String JSON = "{\n" +
             "id: 1,\n" +
             "url: \"http://www.tvmaze.com/shows/1/under-the-dome\",\n" +
@@ -87,7 +92,9 @@ public class GetShowDetailUseCaseTest {
             .create()
             .fromJson(JSON, Show.class);
 
-    private final Observable<Show> obserableOneShow = Observable.just(show);
+    private final List<Show> shows = new ArrayList<>();
+
+    private Observable<List<Show>> observableShows;
 
     @Mock
     ShowRepository showRepository;
@@ -96,26 +103,29 @@ public class GetShowDetailUseCaseTest {
     @Mock
     PostExecutionThread postExecutionThread;
 
-    private GetShowDetailUseCase getShowDetailUseCase;
+    private GetShowsUseCase getShowsUseCase;
 
     @Before
     public void setupGetShowDetailUseCaseTest() {
         MockitoAnnotations.initMocks(this);
-        getShowDetailUseCase = new GetShowDetailUseCase(useCaseExecutor, postExecutionThread, showRepository);
+        shows.add(show);
+        shows.add(show);
+        observableShows = Observable.just(shows);
+        getShowsUseCase = new GetShowsUseCase(useCaseExecutor, postExecutionThread, showRepository);
     }
 
     @Test
     public void testInteract() {
 
-        when(showRepository.getShow(SHOW_ID)).thenReturn(obserableOneShow);
-        AssertableSubscriber<Show> returned = getShowDetailUseCase.interact(SHOW_ID).test();
+        when(showRepository.getShows(PAGE)).thenReturn(observableShows);
+        AssertableSubscriber<List<Show>> returned = getShowsUseCase.interact(1).test();
 
         returned.awaitTerminalEvent();
 
-        verify(showRepository).getShow(SHOW_ID);
+        verify(showRepository).getShows(PAGE);
         returned.assertCompleted()
                 .assertNoErrors()
-                .assertValue(show)
+                .assertValue(shows)
                 .assertValueCount(1);
 
     }
@@ -125,16 +135,17 @@ public class GetShowDetailUseCaseTest {
 
         NullPointerException fucker = new NullPointerException("Fucker");
 
-        when(showRepository.getShow(anyString())).thenReturn(
+        when(showRepository.getShows(anyInt())).thenReturn(
                 Observable.create(showEmitter -> showEmitter.onError(fucker))
         );
-        AssertableSubscriber<Show> returned = getShowDetailUseCase.interact(SHOW_ID).test();
+        AssertableSubscriber<List<Show>> returned = getShowsUseCase.interact(PAGE).test();
 
         returned.awaitTerminalEvent();
 
-        verify(showRepository).getShow(SHOW_ID);
+        verify(showRepository).getShows(PAGE);
         returned.assertError(fucker)
-                .assertValueCount(0);
+                .assertValueCount(0)
+                .assertNotCompleted();
 
     }
 
