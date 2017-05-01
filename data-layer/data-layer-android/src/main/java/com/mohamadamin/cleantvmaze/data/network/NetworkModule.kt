@@ -27,6 +27,7 @@ class NetworkModule {
         return retrofit.create(ShowsAPI::class.java)
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(converterFactory: Converter.Factory): Retrofit {
         return Retrofit.Builder()
@@ -36,11 +37,13 @@ class NetworkModule {
                 .build()
     }
 
+    @Singleton
     @Provides
     fun provideConverterFactory(gson: Gson): Converter.Factory {
         return GsonConverterFactory.create(gson)
     }
 
+    @Singleton
     @Provides
     fun provideGson(): Gson {
         return GsonBuilder().setVersion(GSON_VERSION)

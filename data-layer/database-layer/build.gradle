@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion cleantvmaze.compileSdk
@@ -33,9 +34,6 @@ dependencies {
 
     compile libraries.kotlinStdLib
 
-    compile libraries.retrofit
-    compile libraries.retrofitAdapter
-    compile libraries.retrofitConverter
     compile libraries.timber
     compile libraries.rxAndroid
 

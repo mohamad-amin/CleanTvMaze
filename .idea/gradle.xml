@@ -9,6 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/data-layer/data-layer-android" />
+            <option value="$PROJECT_DIR$/data-layer/database-layer" />
             <option value="$PROJECT_DIR$/domain-layer" />
             <option value="$PROJECT_DIR$/presentation-layer" />
           </set>
