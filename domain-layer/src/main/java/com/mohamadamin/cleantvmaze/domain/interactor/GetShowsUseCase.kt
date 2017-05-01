@@ -1,7 +1,7 @@
-package com.mohamadamin.domain.interactor
+package com.mohamadamin.cleantvmaze.domain.interactor
 
-import com.mohamadamin.domain.entity.Show
-import com.mohamadamin.domain.repository.ShowRepository
+import com.mohamadamin.cleantvmaze.domain.entity.Show
+import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository
 import easymvp.executer.PostExecutionThread
 import easymvp.executer.UseCaseExecutor
 import easymvp.usecase.ObservableUseCase

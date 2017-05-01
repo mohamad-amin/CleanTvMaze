@@ -1,9 +1,9 @@
-package com.mohamadamin.domain.interactor;
+package com.mohamadamin.cleantvmaze.domain.interactor;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
-import com.mohamadamin.domain.entity.Show;
-import com.mohamadamin.domain.repository.ShowRepository;
+import com.mohamadamin.cleantvmaze.domain.entity.Show;
+import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -129,8 +129,6 @@ public class GetShowDetailUseCaseTest {
                 Observable.create(showEmitter -> showEmitter.onError(fucker))
         );
         AssertableSubscriber<Show> returned = getShowDetailUseCase.interact(SHOW_ID).test();
-
-        returned.awaitTerminalEvent();
 
         verify(showRepository).getShow(SHOW_ID);
         returned.assertError(fucker)

@@ -1,7 +1,7 @@
-package com.mohamadamin.domain.repository
+package com.mohamadamin.cleantvmaze.domain.repository
 
-import com.mohamadamin.domain.entity.People
-import com.mohamadamin.domain.entity.Show
+import com.mohamadamin.cleantvmaze.domain.entity.People
+import com.mohamadamin.cleantvmaze.domain.entity.Show
 import rx.Observable
 
 /**

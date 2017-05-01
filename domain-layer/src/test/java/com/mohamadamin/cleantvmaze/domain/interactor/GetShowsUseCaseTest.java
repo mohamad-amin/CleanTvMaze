@@ -1,10 +1,9 @@
-package com.mohamadamin.domain.interactor;
+package com.mohamadamin.cleantvmaze.domain.interactor;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.mohamadamin.domain.entity.Show;
-import com.mohamadamin.domain.repository.ShowRepository;
+import com.mohamadamin.cleantvmaze.domain.entity.Show;
+import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,6 @@ import rx.Observable;
 import rx.observers.AssertableSubscriber;
 
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
