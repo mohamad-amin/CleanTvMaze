@@ -6,6 +6,7 @@ import com.mohamadamin.cleantvmaze.database.mapper.season.SeasonDatabaseToDomain
 import com.mohamadamin.cleantvmaze.database.mapper.show.ShowDatabaseToDomainMapper
 import com.mohamadamin.cleantvmaze.database.mapper.show.ShowDomainToDatabaseMapper
 import com.mohamadamin.cleantvmaze.domain.Constants
+import com.mohamadamin.cleantvmaze.domain.repository.datasource.InsertShowDataSource
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
 import dagger.Module
 import dagger.Provides
@@ -37,11 +38,18 @@ class DatabaseModule {
 
     @Provides
     @Named(Constants.DATASOURCE_REALM)
-    fun provideRealmShowDataSource(
+    fun provideRetrieveRealmShowDataSource(
             showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,
-            episodeDbToDomain: EpisodeDatabaseToDomainMapper, seasonDbToDomain: SeasonDatabaseToDomainMapper):
-            RetrieveShowDataSource = RealmShowDataSource(
-                    showDomainToDB, showDbToDomain, episodeDbToDomain, seasonDbToDomain
-            )
+            episodeDbToDomain: EpisodeDatabaseToDomainMapper, seasonDbToDomain: SeasonDatabaseToDomainMapper
+    ): RetrieveShowDataSource =
+            RealmShowDataSource(showDomainToDB, showDbToDomain, episodeDbToDomain, seasonDbToDomain)
+
+    @Provides
+    @Named(Constants.DATASOURCE_REALM)
+    fun provideInsertRealmShowDataSource(
+            showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,
+            episodeDbToDomain: EpisodeDatabaseToDomainMapper, seasonDbToDomain: SeasonDatabaseToDomainMapper
+    ): InsertShowDataSource =
+            RealmShowDataSource(showDomainToDB, showDbToDomain, episodeDbToDomain, seasonDbToDomain)
 
 }

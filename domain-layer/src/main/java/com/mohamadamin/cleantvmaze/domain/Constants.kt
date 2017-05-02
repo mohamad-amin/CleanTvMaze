@@ -5,6 +5,7 @@ package com.mohamadamin.cleantvmaze.domain
  */
 object Constants {
 
+    // DataSource variants
     const val DATASOURCE_REALM = "RealmDataSource"
     const val DATASOURCE_NETWORK = "NetworkDataSource"
 
