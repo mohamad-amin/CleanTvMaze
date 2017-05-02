@@ -30,6 +30,7 @@ dependencies {
 
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':domain-layer')
+    compile project(':database-layer')
 
     compile libraries.kotlinStdLib
 

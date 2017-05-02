@@ -1,15 +1,14 @@
-package com.mohamadamin.cleantvmaze.database.mapper
+package com.mohamadamin.cleantvmaze.database.mapper.show
 
 import com.mohamadamin.cleantvmaze.database.entity.*
 import com.mohamadamin.cleantvmaze.domain.entity.*
-import easymvp.boundary.DataMapper
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-class ShowDomainToDatabaseMapper: DataMapper<Show, RealmShow>() {
+class ShowDomainToDatabaseMapper: easymvp.boundary.DataMapper<Show, RealmShow>() {
 
-    override fun call(show: Show): RealmShow {
+    override fun call(show: com.mohamadamin.cleantvmaze.domain.entity.Show): com.mohamadamin.cleantvmaze.database.entity.RealmShow {
 
         val links = show.links
         val network = show.network
@@ -19,7 +18,7 @@ class ShowDomainToDatabaseMapper: DataMapper<Show, RealmShow>() {
         val image = show.image
         val genres = show.genres
 
-        return RealmShow(
+        return com.mohamadamin.cleantvmaze.database.entity.RealmShow(
                 show.updated,
                 RealmShowLink(RealmShowUrl(links.self.href), RealmShowUrl(links.previousEpisode.href)),
                 RealmProducer(network.id, network.name,

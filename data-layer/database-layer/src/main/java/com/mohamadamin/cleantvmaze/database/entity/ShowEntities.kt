@@ -66,6 +66,7 @@ open class RealmSeason(
         open var runtime: Int,
         open var url: String,
         open var name: String,
+        open var showId: String,
         open var airdate: String,
         open var airtime: String,
         open var airstamp: String,
@@ -76,11 +77,12 @@ open class RealmSeason(
 @RealmClass
 open class RealmEpisode(
         open var id: Int,
-        open var season: Int,
         open var number: Int,
         open var runtime: Int,
+        open var season: Int,
         open var url: String,
         open var name: String,
+        open var showId: String,
         open var airdate: String,
         open var airtime: String,
         open var airstamp: String,

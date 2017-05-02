@@ -1,13 +1,13 @@
-package com.mohamadamin.cleantvmaze.domain.repository
+package com.mohamadamin.cleantvmaze.domain.repository.datasource
 
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import rx.Observable
 
 /**
- * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
+ * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-interface ShowRepository {
+interface RetrieveShowDataSource {
 
     fun getShows(page: Int): Observable<List<Show>>
 
@@ -15,7 +15,7 @@ interface ShowRepository {
 
     fun getShowEpisodes(showId: String): Observable<List<Episode>>
 
-    fun getShowSeasons(showId: String): Observable<List<Episode>>
+    fun getShowSeasons(showId: String): Observable<List<Season>>
 
     fun singleSearchShow(query: String): Observable<Show>
 

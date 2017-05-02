@@ -7,11 +7,9 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-interface SearchRepository {
+interface PeopleRepository {
 
-    fun singleSearchShow(query: String): Observable<Show>
-
-    fun searchShows(query: String): Observable<List<Show>>
+    fun getPeople(): Observable<List<People>>
 
     fun searchPeople(query: String): Observable<List<People>>
 

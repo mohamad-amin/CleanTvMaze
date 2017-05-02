@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.database.mapper
+package com.mohamadamin.cleantvmaze.database.mapper.show
 
 import com.mohamadamin.cleantvmaze.database.entity.RealmShow
 import com.mohamadamin.cleantvmaze.database.entity.toList
