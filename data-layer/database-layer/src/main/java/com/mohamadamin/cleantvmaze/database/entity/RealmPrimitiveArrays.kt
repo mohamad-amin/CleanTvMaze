@@ -5,11 +5,7 @@ package com.mohamadamin.cleantvmaze.database.entity
  */
 import io.realm.RealmObject
 
-public open class RealmIntArray : RealmObject() {
-
-    public open var joinedInts: String? = null
-
-}
+public open class RealmIntArray(open var joinedInts: String? = null) : RealmObject()
 
 public fun RealmIntArray.toList(): List<Int> {
     if (joinedInts != null) {
@@ -19,11 +15,7 @@ public fun RealmIntArray.toList(): List<Int> {
     }
 }
 
-public open class RealmLongArray : RealmObject() {
-
-    public open var joinedLongs: String? = null
-
-}
+public open class RealmLongArray(open var joinedLongs: String? = null) : RealmObject()
 
 public fun RealmLongArray.toList(): List<Long> {
     if (joinedLongs != null) {
@@ -33,11 +25,7 @@ public fun RealmLongArray.toList(): List<Long> {
     }
 }
 
-public open class RealmStringArray : RealmObject() {
-
-    public open var joinedStrings: String? = null
-
-}
+public open class RealmStringArray(open var joinedStrings: String? = null) : RealmObject()
 
 public fun RealmStringArray.toList(): List<String> {
     // TODO think of a not horrible solution for this

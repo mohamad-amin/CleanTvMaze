@@ -1,6 +1,5 @@
 package com.mohamadamin.cleantvmaze.database.entity
 
-import com.mohamadamin.cleantvmaze.domain.entity.Country
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
@@ -50,7 +49,7 @@ open class RealmPeople(
 open class RealmProducer(
         @PrimaryKey open var id: Int,
         open var name: String,
-        open var country: Country
+        open var country: RealmCountry
 ): RealmObject()
 
 @RealmClass
