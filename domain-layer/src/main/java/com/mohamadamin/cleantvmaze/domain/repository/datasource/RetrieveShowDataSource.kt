@@ -1,6 +1,7 @@
 package com.mohamadamin.cleantvmaze.domain.repository.datasource
 
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
+import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import rx.Observable
 
