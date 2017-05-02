@@ -38,18 +38,12 @@ class DatabaseModule {
 
     @Provides
     @Named(Constants.DATASOURCE_REALM)
-    fun provideRetrieveRealmShowDataSource(
-            showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,
-            episodeDbToDomain: EpisodeDatabaseToDomainMapper, seasonDbToDomain: SeasonDatabaseToDomainMapper
-    ): RetrieveShowDataSource =
-            RealmShowDataSource(showDomainToDB, showDbToDomain, episodeDbToDomain, seasonDbToDomain)
+    fun provideRetrieveRealmShowDataSource(realmShowDataSource: RealmShowDataSource): RetrieveShowDataSource =
+            realmShowDataSource
 
     @Provides
     @Named(Constants.DATASOURCE_REALM)
-    fun provideInsertRealmShowDataSource(
-            showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,
-            episodeDbToDomain: EpisodeDatabaseToDomainMapper, seasonDbToDomain: SeasonDatabaseToDomainMapper
-    ): InsertShowDataSource =
-            RealmShowDataSource(showDomainToDB, showDbToDomain, episodeDbToDomain, seasonDbToDomain)
+    fun provideInsertRealmShowDataSource(realmShowDataSource: RealmShowDataSource): InsertShowDataSource =
+            realmShowDataSource
 
 }

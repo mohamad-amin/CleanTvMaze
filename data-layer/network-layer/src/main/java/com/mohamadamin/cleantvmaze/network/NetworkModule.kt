@@ -4,6 +4,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.mohamadamin.cleantvmaze.domain.Constants
+import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
 import com.mohamadamin.cleantvmaze.network.datasource.NetworkShowDataSource
 import dagger.Module
 import dagger.Provides
@@ -27,7 +28,7 @@ class NetworkModule {
 
     @Provides
     @Named(Constants.DATASOURCE_NETWORK)
-    fun provideNetworkShowDataSource(showsAPI: ShowsAPI) =
+    fun provideNetworkShowDataSource(showsAPI: ShowsAPI): RetrieveShowDataSource =
             NetworkShowDataSource(showsAPI)
 
     @Provides
@@ -45,12 +46,12 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideConverterFactory(gson: Gson) =
+    fun provideConverterFactory(gson: Gson): Converter.Factory =
             GsonConverterFactory.create(gson)
 
     @Singleton
     @Provides
-    fun provideGson() =
+    fun provideGson(): Gson =
             GsonBuilder().setVersion(GSON_VERSION)
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .create()

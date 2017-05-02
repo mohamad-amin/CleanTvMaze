@@ -44,7 +44,7 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         return Completable.fromAction {
 
             val realm = Realm.getDefaultInstance()
-            val realmShows = shows.subscribeOn(Schedulers.computation())
+            val realmShows = shows.subscribeOn(Schedulers.io())
                     .flatMapIterable {
                         list -> list
                     }.map(showDomainToDatabaseMapper)
@@ -63,7 +63,7 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         return Completable.fromAction {
 
             val realm = Realm.getDefaultInstance()
-            val realmEpisodes = episodes.subscribeOn(Schedulers.computation())
+            val realmEpisodes = episodes.subscribeOn(Schedulers.io())
                     .flatMapIterable {
                         list -> list
                     }.map { episode ->
@@ -86,7 +86,7 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         return Completable.fromAction {
 
             val realm = Realm.getDefaultInstance()
-            val realmSeasons = seasons.subscribeOn(Schedulers.computation())
+            val realmSeasons = seasons.subscribeOn(Schedulers.io())
                     .flatMapIterable {
                         list -> list
                     }.map { season ->
@@ -105,6 +105,9 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         }
     }
 
+    /**
+     * Todo: Implement pages
+     */
     override fun getShows(page: Int): Observable<List<Show>> {
         val realm = Realm.getDefaultInstance()
         val shows = realm.where(RealmShow::class.java)
@@ -186,7 +189,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .like("summary", query)
                 .findAll()
                 .asObservable()
-                .subscribeOn(Schedulers.computation())
                 .flatMap { realmResults ->
                     Observable.from(realmResults)
                             .map(showDatabaseToDomainMapper)

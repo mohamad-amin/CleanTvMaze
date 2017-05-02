@@ -10,6 +10,7 @@ import easymvp.boundary.DataMapper
  */
 class EpisodeDatabaseToDomainMapper : DataMapper<RealmEpisode, Episode>() {
 
+    /** @inheritedDoc */
     override fun call(episode: RealmEpisode): Episode {
         return Episode(
                 episode.id, episode.number, episode.runtime, episode.season, episode.url, episode.name,

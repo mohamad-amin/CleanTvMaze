@@ -1,36 +1,117 @@
 package com.mohamadamin.cleantvmaze.data.repository.show
 
+import com.mohamadamin.cleantvmaze.domain.Constants
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
+import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository
+import com.mohamadamin.cleantvmaze.domain.repository.datasource.InsertShowDataSource
+import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
 import rx.Observable
+import rx.schedulers.Schedulers
+import javax.inject.Inject
+import javax.inject.Named
+import javax.inject.Singleton
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
+@Singleton
 class ShowRepositoryImpl: ShowRepository {
 
-    override fun getShows(page: Int): Observable<List<Show>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private lateinit var networkRetrieveDataSource: RetrieveShowDataSource
+    private lateinit var realmRetrieveDataSource: RetrieveShowDataSource
+    private lateinit var realmInsertDataSource: InsertShowDataSource
+
+    @Inject
+    constructor(@Named(Constants.DATASOURCE_NETWORK) networkRetrieveShowDataSource: RetrieveShowDataSource,
+            @Named(Constants.DATASOURCE_REALM) realmRetrieveShowDataSource: RetrieveShowDataSource,
+            @Named(Constants.DATASOURCE_REALM) realmInsertShowDataSource: InsertShowDataSource) {
+        this.networkRetrieveDataSource = networkRetrieveShowDataSource
+        this.realmRetrieveDataSource = realmRetrieveShowDataSource
+        this.realmInsertDataSource = realmInsertShowDataSource
     }
 
-    override fun getShow(showId: String): Observable<Show> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getShows(page: Int): Observable<List<Show>> {
+
+        var needsPush = true
+        val networkObservable = networkRetrieveDataSource.getShows(page)
+
+        val shows = realmRetrieveDataSource.getShows(page)
+                .filter { list ->
+                    if (!list.isEmpty()) {
+                        needsPush = false
+                    }
+                    !list.isEmpty()
+                }
+                .switchIfEmpty(networkObservable)
+                .subscribeOn(Schedulers.io())
+
+        if (needsPush) {
+            realmInsertDataSource.insertShows(networkObservable)
+        }
+        return shows
+
     }
+
+    override fun getShow(showId: String): Observable<Show> =
+            realmRetrieveDataSource.getShow(showId)
+                    .switchIfEmpty(networkRetrieveDataSource.getShow(showId))
+                    .subscribeOn(Schedulers.io())
 
     override fun getShowEpisodes(showId: String): Observable<List<Episode>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+        var needsPush = true
+        val networkObservable = networkRetrieveDataSource.getShowEpisodes(showId)
+
+        val shows = realmRetrieveDataSource.getShowEpisodes(showId)
+                .filter { list ->
+                    if (!list.isEmpty()) {
+                        needsPush = false
+                    }
+                    !list.isEmpty()
+                }
+                .switchIfEmpty(networkObservable)
+                .subscribeOn(Schedulers.io())
+
+        if (needsPush) {
+            realmInsertDataSource.insertEpisodes(showId, networkObservable)
+        }
+        return shows
+
     }
 
-    override fun getShowSeasons(showId: String): Observable<List<Episode>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getShowSeasons(showId: String): Observable<List<Season>> {
+
+        var needsPush = true
+        val networkObservable = networkRetrieveDataSource.getShowSeasons(showId)
+
+        val shows = realmRetrieveDataSource.getShowSeasons(showId)
+                .filter { list ->
+                    if (!list.isEmpty()) {
+                        needsPush = false
+                    }
+                    !list.isEmpty()
+                }
+                .switchIfEmpty(networkObservable)
+                .subscribeOn(Schedulers.io())
+
+        if (needsPush) {
+            realmInsertDataSource.insertSeasons(showId, networkObservable)
+        }
+        return shows
+
     }
 
-    override fun singleSearchShow(query: String): Observable<Show> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun singleSearchShow(query: String): Observable<Show> =
+            realmRetrieveDataSource.singleSearchShow(query)
+                    .switchIfEmpty(networkRetrieveDataSource.singleSearchShow(query))
+                    .subscribeOn(Schedulers.io())
 
-    override fun searchShows(query: String): Observable<List<Show>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun searchShows(query: String): Observable<List<Show>> =
+            realmRetrieveDataSource.searchShows(query)
+                    .filter { list -> !list.isEmpty() }
+                    .switchIfEmpty(networkRetrieveDataSource.searchShows(query))
+                    .subscribeOn(Schedulers.io())
+
 }

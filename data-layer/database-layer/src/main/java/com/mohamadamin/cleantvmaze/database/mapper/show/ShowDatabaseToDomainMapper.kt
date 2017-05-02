@@ -10,6 +10,7 @@ import easymvp.boundary.DataMapper
  */
 class ShowDatabaseToDomainMapper: DataMapper<RealmShow, Show>() {
 
+    /** @inheritedDoc */
     override fun call(realmShow: RealmShow): Show {
 
         val realmLinks = realmShow.links

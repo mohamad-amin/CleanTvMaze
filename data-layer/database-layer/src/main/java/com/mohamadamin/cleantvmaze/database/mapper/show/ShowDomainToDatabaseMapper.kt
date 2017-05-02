@@ -8,6 +8,7 @@ import com.mohamadamin.cleantvmaze.domain.entity.*
  */
 class ShowDomainToDatabaseMapper: easymvp.boundary.DataMapper<Show, RealmShow>() {
 
+    /** @inheritedDoc */
     override fun call(show: com.mohamadamin.cleantvmaze.domain.entity.Show): com.mohamadamin.cleantvmaze.database.entity.RealmShow {
 
         val links = show.links

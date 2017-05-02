@@ -10,4 +10,5 @@ class ComputationThread: UseCaseExecutor {
 
     override fun getScheduler() =
             Schedulers.computation()
+
 }
