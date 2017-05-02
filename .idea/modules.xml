@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/data-layer-android/data-layer-android.iml" filepath="$PROJECT_DIR$/data-layer-android/data-layer-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/data-layer/database-layer/database-layer.iml" filepath="$PROJECT_DIR$/data-layer/database-layer/database-layer.iml" />
       <module fileurl="file://$PROJECT_DIR$/domain-layer/domain-layer.iml" filepath="$PROJECT_DIR$/domain-layer/domain-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-layer/network-layer/network-layer.iml" filepath="$PROJECT_DIR$/data-layer/network-layer/network-layer.iml" />
       <module fileurl="file://$PROJECT_DIR$/presentation-layer/presentation-layer.iml" filepath="$PROJECT_DIR$/presentation-layer/presentation-layer.iml" />
     </modules>
   </component>

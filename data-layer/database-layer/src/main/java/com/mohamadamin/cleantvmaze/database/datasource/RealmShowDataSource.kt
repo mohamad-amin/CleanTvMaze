@@ -25,10 +25,10 @@ import javax.inject.Singleton
 @Singleton
 class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
 
-    var showDomainToDatabaseMapper: ShowDomainToDatabaseMapper
-    var showDatabaseToDomainMapper: ShowDatabaseToDomainMapper
-    val seasonDatabaseToDomainMapper: SeasonDatabaseToDomainMapper
-    var episodeDatabaseToDomainMapper: EpisodeDatabaseToDomainMapper
+    private lateinit var showDomainToDatabaseMapper: ShowDomainToDatabaseMapper
+    private lateinit var showDatabaseToDomainMapper: ShowDatabaseToDomainMapper
+    private lateinit var seasonDatabaseToDomainMapper: SeasonDatabaseToDomainMapper
+    private lateinit var episodeDatabaseToDomainMapper: EpisodeDatabaseToDomainMapper
 
     @Inject
     constructor(showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,

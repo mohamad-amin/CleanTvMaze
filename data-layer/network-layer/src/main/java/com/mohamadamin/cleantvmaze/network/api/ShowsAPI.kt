@@ -4,6 +4,7 @@ import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import retrofit2.http.GET
+import retrofit2.http.Query
 import rx.Observable
 
 /**
@@ -22,5 +23,11 @@ interface ShowsAPI {
 
     @GET("/shows/{id}/seasons")
     fun getSeasons(showId: Int): Observable<List<Season>>
+
+    @GET("/search/shows")
+    fun searchShows(@Query("q") query: String): Observable<List<Show>>
+
+    @GET("/singlesearch/shows")
+    fun searchSingleShow(@Query("q") query: String): Observable<Show>
 
 }

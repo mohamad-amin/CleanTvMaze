@@ -1,7 +1,8 @@
-include ':presentation-layer', ':database-layer',
+include ':presentation-layer',
         ':domain-layer',
         'data-layer/data-layer-android',
-        'data-layer/database-layer'
+        'data-layer/database-layer',
+        'data-layer/network-layer'
 
 rootProject.children.each { project ->
     if (project.name.startsWith("data-layer/")) {
