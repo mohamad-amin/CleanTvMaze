@@ -15,7 +15,9 @@ import javax.inject.Singleton
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
- */
+ * Todo: somehow remove the ugly [needsPush] boolean that exists in some methods and solve the problem without it,
+ * there are chances of causing memory leaks because of this reference
+*/
 @Singleton
 class ShowRepositoryImpl: ShowRepository {
 
@@ -44,12 +46,15 @@ class ShowRepositoryImpl: ShowRepository {
                     }
                     !list.isEmpty()
                 }
+                .subscribeOn(Schedulers.computation())
                 .switchIfEmpty(networkObservable)
-                .subscribeOn(Schedulers.io())
+                .doOnNext {
+                    if (needsPush) {
+                        realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
+                    }
+                }.subscribeOn(Schedulers.io())
 
-        if (needsPush) {
-            realmInsertDataSource.insertShows(networkObservable)
-        }
+
         return shows
 
     }
@@ -71,12 +76,14 @@ class ShowRepositoryImpl: ShowRepository {
                     }
                     !list.isEmpty()
                 }
+                .subscribeOn(Schedulers.computation())
                 .switchIfEmpty(networkObservable)
-                .subscribeOn(Schedulers.io())
+                .doOnNext {
+                    if (needsPush) {
+                        realmInsertDataSource.insertEpisodes(showId, it).subscribeOn(Schedulers.computation())
+                    }
+                }.subscribeOn(Schedulers.io())
 
-        if (needsPush) {
-            realmInsertDataSource.insertEpisodes(showId, networkObservable)
-        }
         return shows
 
     }
@@ -93,12 +100,15 @@ class ShowRepositoryImpl: ShowRepository {
                     }
                     !list.isEmpty()
                 }
+                .subscribeOn(Schedulers.computation())
                 .switchIfEmpty(networkObservable)
+                .doOnNext {
+                    if (needsPush) {
+                        realmInsertDataSource.insertSeasons(showId, it).subscribeOn(Schedulers.computation())
+                    }
+                }
                 .subscribeOn(Schedulers.io())
 
-        if (needsPush) {
-            realmInsertDataSource.insertSeasons(showId, networkObservable)
-        }
         return shows
 
     }

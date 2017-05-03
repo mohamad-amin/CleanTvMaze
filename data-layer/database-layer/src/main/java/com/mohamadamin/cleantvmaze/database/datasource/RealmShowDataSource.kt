@@ -40,68 +40,46 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         episodeDatabaseToDomainMapper = episodeDbToDomain
     }
 
-    override fun insertShows(shows: Observable<List<Show>>): Completable {
+    override fun insertShows(shows: List<Show>): Completable {
         return Completable.fromAction {
-
             val realm = Realm.getDefaultInstance()
-            val realmShows = shows.subscribeOn(Schedulers.io())
-                    .flatMapIterable {
-                        list -> list
-                    }.map(showDomainToDatabaseMapper)
-
             realm.executeTransaction {
-                realmShows.subscribeOn(Schedulers.computation())
+                Observable.from(shows).map(showDomainToDatabaseMapper)
                         .forEach { realmShow -> it.copyToRealm(realmShow) }
             }
-
             realm.close()
-
         }
     }
 
-    override fun insertEpisodes(showId: String, episodes: Observable<List<Episode>>): Completable {
+    override fun insertEpisodes(showId: String, episodes: List<Episode>): Completable {
         return Completable.fromAction {
-
             val realm = Realm.getDefaultInstance()
-            val realmEpisodes = episodes.subscribeOn(Schedulers.io())
-                    .flatMapIterable {
-                        list -> list
-                    }.map { episode ->
-                        RealmEpisode(episode.id, episode.number, episode.runtime, episode.season,
-                                episode.url, episode.name, showId, episode.airdate, episode.airtime, episode.airstamp,
-                                episode.summary, RealmShowImageUrl(episode.image.medium, episode.image.original))
-                    }
-
             realm.executeTransaction {
-                realmEpisodes.subscribeOn(Schedulers.computation())
-                        .forEach { realmEpisode -> it.copyToRealm(realmEpisode) }
+                Observable.from(episodes)
+                        .map { episode ->
+                            RealmEpisode(episode.id, episode.number, episode.runtime, episode.season,
+                                    episode.url, episode.name, showId, episode.airdate, episode.airtime,
+                                    episode.airstamp, episode.summary,
+                                    RealmShowImageUrl(episode.image.medium, episode.image.original))
+                        }.forEach { realmEpisode -> it.copyToRealm(realmEpisode) }
             }
-
             realm.close()
-
         }
     }
 
-    override fun insertSeasons(showId: String, seasons: Observable<List<Season>>): Completable {
+    override fun insertSeasons(showId: String, seasons: List<Season>): Completable {
         return Completable.fromAction {
-
             val realm = Realm.getDefaultInstance()
-            val realmSeasons = seasons.subscribeOn(Schedulers.io())
-                    .flatMapIterable {
-                        list -> list
-                    }.map { season ->
-                        RealmSeason(season.id, season.season, season.number, season.runtime,
-                                season.url, season.name, showId, season.airdate, season.airtime, season.airstamp,
-                                season.summary, RealmShowImageUrl(season.image.medium, season.image.original))
-                    }
-
             realm.executeTransaction {
-                realmSeasons.subscribeOn(Schedulers.computation()).
-                        forEach { realmSeason -> it.copyToRealm(realmSeason) }
+                Observable.from(seasons)
+                        .map { season ->
+                            RealmSeason(season.id, season.season, season.number, season.runtime,
+                                    season.url, season.name, showId, season.airdate, season.airtime, season.airstamp,
+                                    season.summary, RealmShowImageUrl(season.image.medium, season.image.original))
+                        }
+                        .forEach { realmSeason -> it.copyToRealm(realmSeason) }
             }
-
             realm.close()
-
         }
     }
 
@@ -113,7 +91,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
         val shows = realm.where(RealmShow::class.java)
                 .findAll()
                 .asObservable()
-                .subscribeOn(Schedulers.computation())
                 .flatMap { realmResults ->
                     Observable.from(realmResults)
                             .map(showDatabaseToDomainMapper)
@@ -129,7 +106,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .equalTo("showId", showId)
                 .findFirst()
                 .asObservable<RealmShow>()
-                .subscribeOn(Schedulers.computation())
                 .map(showDatabaseToDomainMapper)
         realm.close()
         return show
@@ -141,7 +117,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .equalTo("showId", showId)
                 .findAll()
                 .asObservable()
-                .subscribeOn(Schedulers.computation())
                 .flatMap { realmResults ->
                     Observable.from(realmResults)
                             .map(episodeDatabaseToDomainMapper)
@@ -157,7 +132,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .equalTo("showId", showId)
                 .findAll()
                 .asObservable()
-                .subscribeOn(Schedulers.computation())
                 .flatMap { realmResults ->
                     Observable.from(realmResults)
                             .map(seasonDatabaseToDomainMapper)
@@ -175,7 +149,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .like("summary", query)
                 .findFirst()
                 .asObservable<RealmShow>()
-                .subscribeOn(Schedulers.computation())
                 .map(showDatabaseToDomainMapper)
         realm.close()
         return show
@@ -196,7 +169,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 }
         realm.close()
         return shows
-
     }
 
 }

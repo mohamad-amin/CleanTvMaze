@@ -11,10 +11,10 @@ import rx.Observable
  */
 interface InsertShowDataSource {
 
-    fun insertShows(shows: Observable<List<Show>>): Completable
+    fun insertShows(shows: List<Show>): Completable
 
-    fun insertEpisodes(showId: String, episodes: Observable<List<Episode>>): Completable
+    fun insertSeasons(showId: String, seasons: List<Season>): Completable
 
-    fun insertSeasons(showId: String, seasons: Observable<List<Season>>): Completable
+    fun insertEpisodes(showId: String, episodes: List<Episode>): Completable
 
 }
