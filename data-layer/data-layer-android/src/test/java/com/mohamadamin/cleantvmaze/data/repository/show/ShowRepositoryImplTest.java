@@ -161,6 +161,46 @@ public class ShowRepositoryImplTest {
     @Test
     public void getShow() {
 
+        // Testing error when no data is available
+        when(realmRetrieve.getShow(SHOW_ID))
+                .thenReturn(Observable.<Show>empty());
+        when(networkRetrieve.getShow(SHOW_ID))
+                .thenReturn(Observable.<Show>empty());
+
+        AssertableSubscriber<Show> getShow = showRepository.getShow(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShow.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(getShow.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.getShow(SHOW_ID))
+                .thenReturn(show1);
+
+        getShow = showRepository.getShow(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShow.assertNoErrors()
+                .assertCompleted()
+                .assertValue(show)
+                .assertValueCount(1);
+
+        // Testing to get data from realm
+        when(realmRetrieve.getShow(SHOW_ID))
+                .thenReturn(Observable.just(searched));
+
+        getShow = showRepository.getShow(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShow.assertNoErrors()
+                .assertCompleted()
+                .assertValue(searched)
+                .assertValueCount(1);
+
     }
 
     @Test

@@ -39,13 +39,14 @@ class ShowRepositoryImpl: ShowRepository {
                     networkRetrieveDataSource.getShows(page).doOnNext {
                         realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
                     }.subscribeOn(Schedulers.io())
-            ).filter { list -> !list.isEmpty() }.first()
+            ).first()
 
 
     override fun getShow(showId: String): Observable<Show> =
-            realmRetrieveDataSource.getShow(showId)
-                    .switchIfEmpty(networkRetrieveDataSource.getShow(showId))
-                    .subscribeOn(Schedulers.io())
+            Observable.concat(
+                    realmRetrieveDataSource.getShow(showId).subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.getShow(showId).subscribeOn(Schedulers.computation())
+            ).first()
 
     override fun getShowEpisodes(showId: String): Observable<List<Episode>> =
             Observable.concat(
@@ -67,9 +68,10 @@ class ShowRepositoryImpl: ShowRepository {
             ).first()
 
     override fun singleSearchShow(query: String): Observable<Show> =
-            realmRetrieveDataSource.singleSearchShow(query)
-                    .switchIfEmpty(networkRetrieveDataSource.singleSearchShow(query))
-                    .subscribeOn(Schedulers.io())
+            Observable.concat(
+                    realmRetrieveDataSource.singleSearchShow(query).subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.singleSearchShow(query).subscribeOn(Schedulers.computation())
+            ).first()
 
     override fun searchShows(query: String): Observable<List<Show>> =
             Observable.concat(
