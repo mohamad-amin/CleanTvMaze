@@ -13,7 +13,7 @@ import rx.Observable
 interface ShowsAPI {
 
     @GET("/shows")
-    fun getShows(page: Int): Observable<List<Show>>
+    fun getShows(@Query("page") page: Int): Observable<List<Show>>
 
     @GET("/shows/{id}")
     fun getShow(showId: Int): Observable<Show>

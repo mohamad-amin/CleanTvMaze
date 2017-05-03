@@ -45,7 +45,9 @@ dependencies {
     testCompile libraries.junit
     testCompile libraries.mockito
     testCompile libraries.hamcrest
+    testCompile libraries.retrofitMock
     testCompile libraries.powermockJunit
     testCompile libraries.powermockMockito
+    testCompile libraries.okHttpMockServer
 
 }

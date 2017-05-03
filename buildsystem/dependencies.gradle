@@ -15,6 +15,7 @@ ext.versions = [
         retrofit            : '2.2.0',
         permDispatcher      : '2.3.2',
         constraintLayout    : '1.0.0-alpha7',
+        okHttp3             : '3.7.0',
 
         // Development
         leakCanary          : '1.5.1',
@@ -43,7 +44,7 @@ ext.libraries = [
         recyclerViewV7      : "com.android.support:recyclerview-v7:$versions.androidSupport",
         appDesign           : "com.android.support:design:$versions.androidSupport",
         supportV4           : "com.android.support:support-v4:$versions.androidSupport",
-        constraintLayout   : "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
+        constraintLayout    : "com.android.support.constraint:constraint-layout:$versions.constraintLayout",
         timber              : "com.jakewharton.timber:timber:$versions.timber",
         butterKnife         : "com.jakewharton:butterknife:$versions.butterKnife",
         butterKnifeCompiler : "com.jakewharton:butterknife-compiler:$versions.butterKnife",
@@ -84,6 +85,8 @@ ext.libraries = [
         espressoIdling      : "com.android.support.test.espresso:espresso-idling-resource:$versions.espresso",
         androidTestRunner   : "com.android.support.test:runner:$versions.androidTest",
         androidTestRules    : "com.android.support.test:rules:$versions.androidTest",
+        retrofitMock        : "com.squareup.retrofit2:retrofit-mock:$versions.retrofit",
+        okHttpMockServer    : "com.squareup.okhttp3:mockwebserver:$versions.okHttp3"
 
 ]
 
