@@ -256,6 +256,49 @@ public class ShowRepositoryImplTest {
     @Test
     public void getShowSeasons() {
 
+        // Testing error when no data is available
+        when(realmRetrieve.getShowSeasons(SHOW_ID))
+                .thenReturn(Observable.<List<Season>>empty());
+        when(networkRetrieve.getShowSeasons(SHOW_ID))
+                .thenReturn(Observable.<List<Season>>empty());
+        when(realmInsert.insertSeasons(anyString(), anyList())).thenReturn(Completable.complete());
+
+        AssertableSubscriber<List<Season>> getShowSeasons = showRepository.getShowSeasons(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowSeasons.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(getShowSeasons.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.getShowSeasons(SHOW_ID))
+                .thenReturn(seasons1);
+
+        getShowSeasons = showRepository.getShowSeasons(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowSeasons.assertNoErrors()
+                .assertCompleted()
+                .assertValue(listOfSeasons1)
+                .assertValueCount(1);
+
+        verify(realmInsert).insertSeasons(SHOW_ID, listOfSeasons1);
+
+        // Testing to get data from realm
+        when(realmRetrieve.getShowSeasons(SHOW_ID))
+                .thenReturn(Observable.just(listOfSeasons2));
+
+        getShowSeasons = showRepository.getShowSeasons(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowSeasons.assertNoErrors()
+                .assertCompleted()
+                .assertValue(listOfSeasons2)
+                .assertValueCount(1);
+
     }
 
     @Test
