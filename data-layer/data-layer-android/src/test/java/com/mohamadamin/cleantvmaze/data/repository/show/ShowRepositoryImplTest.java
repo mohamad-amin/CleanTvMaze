@@ -348,6 +348,49 @@ public class ShowRepositoryImplTest {
     @Test
     public void searchShows() {
 
+        // Testing error when no data is available
+        when(realmRetrieve.searchShows(QUERY))
+                .thenReturn(Observable.<List<Show>>empty());
+        when(networkRetrieve.searchShows(QUERY))
+                .thenReturn(Observable.<List<Show>>empty());
+        when(realmInsert.insertShows(anyList())).thenReturn(Completable.complete());
+
+        AssertableSubscriber<List<Show>> searchShows = showRepository.searchShows(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        searchShows.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(searchShows.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.searchShows(QUERY))
+                .thenReturn(shows1);
+
+        searchShows = showRepository.searchShows(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        searchShows.assertNoErrors()
+                .assertCompleted()
+                .assertValue(listOfShows)
+                .assertValueCount(1);
+
+        verify(realmInsert).insertShows(listOfShows);
+
+        // Testing to get data from realm
+        when(realmRetrieve.searchShows(QUERY))
+                .thenReturn(Observable.just(mixedShows));
+
+        searchShows = showRepository.searchShows(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        searchShows.assertNoErrors()
+                .assertCompleted()
+                .assertValue(mixedShows)
+                .assertValueCount(1);
+        
     }
 
 }
