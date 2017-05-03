@@ -1,12 +1,12 @@
 package com.mohamadamin.cleantvmaze.data.repository.show
 
-import com.mohamadamin.cleantvmaze.domain.Constants
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.InsertShowDataSource
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
+import com.mohamadamin.cleantvmaze.domain.utils.Constants
 import rx.Observable
 import rx.schedulers.Schedulers
 import javax.inject.Inject
@@ -25,8 +25,8 @@ class ShowRepositoryImpl: ShowRepository {
 
     @Inject
     constructor(@Named(Constants.DATASOURCE_NETWORK) networkRetrieveShowDataSource: RetrieveShowDataSource,
-            @Named(Constants.DATASOURCE_REALM) realmRetrieveShowDataSource: RetrieveShowDataSource,
-            @Named(Constants.DATASOURCE_REALM) realmInsertShowDataSource: InsertShowDataSource) {
+                @Named(Constants.DATASOURCE_REALM) realmRetrieveShowDataSource: RetrieveShowDataSource,
+                @Named(Constants.DATASOURCE_REALM) realmInsertShowDataSource: InsertShowDataSource) {
         this.networkRetrieveDataSource = networkRetrieveShowDataSource
         this.realmRetrieveDataSource = realmRetrieveShowDataSource
         this.realmInsertDataSource = realmInsertShowDataSource
@@ -72,9 +72,12 @@ class ShowRepositoryImpl: ShowRepository {
                     .subscribeOn(Schedulers.io())
 
     override fun searchShows(query: String): Observable<List<Show>> =
-            realmRetrieveDataSource.searchShows(query)
-                    .filter { list -> !list.isEmpty() }
-                    .switchIfEmpty(networkRetrieveDataSource.searchShows(query))
-                    .subscribeOn(Schedulers.io())
+            Observable.concat(
+                    realmRetrieveDataSource.searchShows(query)
+                            .subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.searchShows(query).doOnNext {
+                        realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
+                    }.subscribeOn(Schedulers.io())
+            ).first()
 
 }

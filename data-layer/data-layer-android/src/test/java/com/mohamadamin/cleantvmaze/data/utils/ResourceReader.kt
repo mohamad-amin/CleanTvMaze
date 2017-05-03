@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.domain
+package com.mohamadamin.cleantvmaze.network.utils
 
 import java.io.InputStream
 import java.nio.charset.Charset

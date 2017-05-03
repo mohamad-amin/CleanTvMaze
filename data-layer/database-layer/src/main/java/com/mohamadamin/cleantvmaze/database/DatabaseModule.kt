@@ -5,7 +5,7 @@ import com.mohamadamin.cleantvmaze.database.mapper.episode.EpisodeDatabaseToDoma
 import com.mohamadamin.cleantvmaze.database.mapper.season.SeasonDatabaseToDomainMapper
 import com.mohamadamin.cleantvmaze.database.mapper.show.ShowDatabaseToDomainMapper
 import com.mohamadamin.cleantvmaze.database.mapper.show.ShowDomainToDatabaseMapper
-import com.mohamadamin.cleantvmaze.domain.Constants
+import com.mohamadamin.cleantvmaze.domain.utils.Constants
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.InsertShowDataSource
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
 import dagger.Module

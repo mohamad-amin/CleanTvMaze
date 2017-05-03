@@ -3,7 +3,7 @@ package com.mohamadamin.cleantvmaze.data.network
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.mohamadamin.cleantvmaze.domain.Constants
+import com.mohamadamin.cleantvmaze.domain.utils.Constants
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
 import com.mohamadamin.cleantvmaze.network.datasource.NetworkShowDataSource
 import dagger.Module

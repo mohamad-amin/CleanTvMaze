@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.domain
+package com.mohamadamin.cleantvmaze.domain.utils
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
