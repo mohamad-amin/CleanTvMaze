@@ -14,8 +14,11 @@ class TrampolineSchedulerRule: TestRule {
     override fun apply(base: Statement?, description: Description?) = object: Statement() {
         override fun evaluate() {
             RxJavaHooks.setOnNewThreadScheduler { Schedulers.trampoline() }
-            base?.evaluate()
-            RxJavaHooks.reset()
+            try {
+                base?.evaluate()
+            } finally {
+                RxJavaHooks.reset()
+            }
         }
     }
 

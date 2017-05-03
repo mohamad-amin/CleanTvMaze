@@ -39,7 +39,7 @@ class ShowRepositoryImpl: ShowRepository {
                     networkRetrieveDataSource.getShows(page).doOnNext {
                         realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
                     }.subscribeOn(Schedulers.io())
-            ).first()
+            ).filter { list -> !list.isEmpty() }.first()
 
 
     override fun getShow(showId: String): Observable<Show> =

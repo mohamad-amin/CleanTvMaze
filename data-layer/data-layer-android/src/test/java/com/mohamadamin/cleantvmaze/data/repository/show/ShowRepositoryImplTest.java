@@ -21,12 +21,15 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import rx.Completable;
 import rx.Observable;
 import rx.observers.AssertableSubscriber;
-import rx.schedulers.Schedulers;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.anyList;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,7 +51,7 @@ public class ShowRepositoryImplTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
     @Rule
-    TrampolineSchedulerRule trampolineSchedulerRule = new TrampolineSchedulerRule();
+    public TrampolineSchedulerRule trampolineSchedulerRule = new TrampolineSchedulerRule();
 
     private ShowRepositoryImpl showRepository;
 
@@ -110,19 +113,48 @@ public class ShowRepositoryImplTest {
     @Test
     public void getShows() {
 
+        // Testing error when no data is available
         when(realmRetrieve.getShows(PAGE))
                 .thenReturn(Observable.<List<Show>>empty());
         when(networkRetrieve.getShows(PAGE))
+                .thenReturn(Observable.<List<Show>>empty());
+        when(realmInsert.insertShows(anyList())).thenReturn(Completable.complete());
+
+        AssertableSubscriber<List<Show>> getShows = showRepository.getShows(PAGE)
+                .test()
+                .awaitTerminalEvent();
+
+        getShows.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(getShows.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.getShows(PAGE))
                 .thenReturn(shows1);
 
-        AssertableSubscriber<List<Show>> getShows = showRepository.getShows(PAGE).test();
+        getShows = showRepository.getShows(PAGE)
+                .test()
+                .awaitTerminalEvent();
 
         getShows.assertNoErrors()
                 .assertCompleted()
                 .assertValue(listOfShows)
                 .assertValueCount(1);
 
-        assertEquals(listOfShows, new ArrayList<>());
+        verify(realmInsert).insertShows(listOfShows);
+
+        // Testing to get data from realm
+        when(realmRetrieve.getShows(PAGE))
+                .thenReturn(Observable.just(mixedShows));
+
+        getShows = showRepository.getShows(PAGE)
+                .test()
+                .awaitTerminalEvent();
+
+        getShows.assertNoErrors()
+                .assertCompleted()
+                .assertValue(mixedShows)
+                .assertValueCount(1);
 
     }
 
