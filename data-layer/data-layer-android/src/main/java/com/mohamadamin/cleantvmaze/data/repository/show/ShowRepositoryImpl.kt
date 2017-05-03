@@ -15,8 +15,6 @@ import javax.inject.Singleton
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
- * Todo: somehow remove the ugly [needsPush] boolean that exists in some methods and solve the problem without it,
- * there are chances of causing memory leaks because of this reference
 */
 @Singleton
 class ShowRepositoryImpl: ShowRepository {
@@ -34,84 +32,39 @@ class ShowRepositoryImpl: ShowRepository {
         this.realmInsertDataSource = realmInsertShowDataSource
     }
 
-    override fun getShows(page: Int): Observable<List<Show>> {
-
-        var needsPush = true
-        val networkObservable = networkRetrieveDataSource.getShows(page)
-
-        val shows = realmRetrieveDataSource.getShows(page)
-                .filter { list ->
-                    if (!list.isEmpty()) {
-                        needsPush = false
-                    }
-                    !list.isEmpty()
-                }
-                .subscribeOn(Schedulers.computation())
-                .switchIfEmpty(networkObservable)
-                .doOnNext {
-                    if (needsPush) {
+    override fun getShows(page: Int): Observable<List<Show>> =
+            Observable.concat(
+                    realmRetrieveDataSource.getShows(page)
+                            .subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.getShows(page).doOnNext {
                         realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
-                    }
-                }.subscribeOn(Schedulers.io())
+                    }.subscribeOn(Schedulers.io())
+            ).first()
 
-
-        return shows
-
-    }
 
     override fun getShow(showId: String): Observable<Show> =
             realmRetrieveDataSource.getShow(showId)
                     .switchIfEmpty(networkRetrieveDataSource.getShow(showId))
                     .subscribeOn(Schedulers.io())
 
-    override fun getShowEpisodes(showId: String): Observable<List<Episode>> {
-
-        var needsPush = true
-        val networkObservable = networkRetrieveDataSource.getShowEpisodes(showId)
-
-        val shows = realmRetrieveDataSource.getShowEpisodes(showId)
-                .filter { list ->
-                    if (!list.isEmpty()) {
-                        needsPush = false
-                    }
-                    !list.isEmpty()
-                }
-                .subscribeOn(Schedulers.computation())
-                .switchIfEmpty(networkObservable)
-                .doOnNext {
-                    if (needsPush) {
+    override fun getShowEpisodes(showId: String): Observable<List<Episode>> =
+            Observable.concat(
+                    realmRetrieveDataSource.getShowEpisodes(showId)
+                            .subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.getShowEpisodes(showId).doOnNext {
                         realmInsertDataSource.insertEpisodes(showId, it).subscribeOn(Schedulers.computation())
-                    }
-                }.subscribeOn(Schedulers.io())
+                    }.subscribeOn(Schedulers.io())
+            ).first()
 
-        return shows
 
-    }
-
-    override fun getShowSeasons(showId: String): Observable<List<Season>> {
-
-        var needsPush = true
-        val networkObservable = networkRetrieveDataSource.getShowSeasons(showId)
-
-        val shows = realmRetrieveDataSource.getShowSeasons(showId)
-                .filter { list ->
-                    if (!list.isEmpty()) {
-                        needsPush = false
-                    }
-                    !list.isEmpty()
-                }
-                .subscribeOn(Schedulers.computation())
-                .switchIfEmpty(networkObservable)
-                .doOnNext {
-                    if (needsPush) {
+    override fun getShowSeasons(showId: String): Observable<List<Season>> =
+            Observable.concat(
+                    realmRetrieveDataSource.getShowSeasons(showId)
+                            .subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.getShowSeasons(showId).doOnNext {
                         realmInsertDataSource.insertSeasons(showId, it).subscribeOn(Schedulers.computation())
-                    }
-                }
-                .subscribeOn(Schedulers.io())
-
-        return shows
-
-    }
+                    }.subscribeOn(Schedulers.io())
+            ).first()
 
     override fun singleSearchShow(query: String): Observable<Show> =
             realmRetrieveDataSource.singleSearchShow(query)
