@@ -28,7 +28,6 @@ import rx.Observable;
 import rx.observers.AssertableSubscriber;
 
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
@@ -304,6 +303,46 @@ public class ShowRepositoryImplTest {
     @Test
     public void singleSearchShow() {
 
+        // Testing error when no data is available
+        when(realmRetrieve.singleSearchShow(QUERY))
+                .thenReturn(Observable.<Show>empty());
+        when(networkRetrieve.singleSearchShow(QUERY))
+                .thenReturn(Observable.<Show>empty());
+
+        AssertableSubscriber<Show> singleSearchShow = showRepository.singleSearchShow(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        singleSearchShow.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(singleSearchShow.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.singleSearchShow(QUERY))
+                .thenReturn(show1);
+
+        singleSearchShow = showRepository.singleSearchShow(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        singleSearchShow.assertNoErrors()
+                .assertCompleted()
+                .assertValue(show)
+                .assertValueCount(1);
+
+        // Testing to get data from realm
+        when(realmRetrieve.singleSearchShow(QUERY))
+                .thenReturn(Observable.just(searched));
+
+        singleSearchShow = showRepository.singleSearchShow(QUERY)
+                .test()
+                .awaitTerminalEvent();
+
+        singleSearchShow.assertNoErrors()
+                .assertCompleted()
+                .assertValue(searched)
+                .assertValueCount(1);
+        
     }
 
     @Test
