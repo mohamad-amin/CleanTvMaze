@@ -28,7 +28,9 @@ import rx.Observable;
 import rx.observers.AssertableSubscriber;
 
 import static junit.framework.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -205,6 +207,49 @@ public class ShowRepositoryImplTest {
 
     @Test
     public void getShowEpisodes() {
+
+        // Testing error when no data is available
+        when(realmRetrieve.getShowEpisodes(SHOW_ID))
+                .thenReturn(Observable.<List<Episode>>empty());
+        when(networkRetrieve.getShowEpisodes(SHOW_ID))
+                .thenReturn(Observable.<List<Episode>>empty());
+        when(realmInsert.insertEpisodes(anyString(), anyList())).thenReturn(Completable.complete());
+
+        AssertableSubscriber<List<Episode>> getShowEpisodes = showRepository.getShowEpisodes(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowEpisodes.assertNotCompleted()
+                .assertNoValues();
+        assertTrue(getShowEpisodes.getOnErrorEvents().get(0) instanceof NoSuchElementException);
+
+        // Testing to get data from internet first
+        when(networkRetrieve.getShowEpisodes(SHOW_ID))
+                .thenReturn(episodes1);
+
+        getShowEpisodes = showRepository.getShowEpisodes(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowEpisodes.assertNoErrors()
+                .assertCompleted()
+                .assertValue(listOfEpisodes1)
+                .assertValueCount(1);
+
+        verify(realmInsert).insertEpisodes(SHOW_ID, listOfEpisodes1);
+
+        // Testing to get data from realm
+        when(realmRetrieve.getShowEpisodes(SHOW_ID))
+                .thenReturn(Observable.just(listOfEpisodes2));
+
+        getShowEpisodes = showRepository.getShowEpisodes(SHOW_ID)
+                .test()
+                .awaitTerminalEvent();
+
+        getShowEpisodes.assertNoErrors()
+                .assertCompleted()
+                .assertValue(listOfEpisodes2)
+                .assertValueCount(1);
 
     }
 
