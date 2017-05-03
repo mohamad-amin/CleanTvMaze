@@ -8,7 +8,7 @@ import com.mohamadamin.cleantvmaze.data.network.ShowsAPI;
 import com.mohamadamin.cleantvmaze.domain.entity.Episode;
 import com.mohamadamin.cleantvmaze.domain.entity.Season;
 import com.mohamadamin.cleantvmaze.domain.entity.Show;
-import com.mohamadamin.cleantvmaze.network.ResourceReader;
+import com.mohamadamin.cleantvmaze.domain.ResourceReader;
 
 import org.junit.After;
 import org.junit.Before;
