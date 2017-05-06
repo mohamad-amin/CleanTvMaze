@@ -1,24 +1,23 @@
 package com.mohamadamin.cleantvmaze.network.datasource
 
-import com.mohamadamin.cleantvmaze.data.network.ShowsAPI
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
+import com.mohamadamin.cleantvmaze.network.api.ShowsAPI
 import rx.Observable
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-public class NetworkShowDataSource: RetrieveShowDataSource {
+public open class NetworkShowDatasource : RetrieveShowDataSource {
 
     private var showsApi: ShowsAPI
 
     @Inject
-    constructor(showsAPI: ShowsAPI) {
-        showsApi = showsAPI
+    constructor(showsApi: ShowsAPI) {
+        this.showsApi = showsApi
     }
 
     override fun getShows(page: Int): Observable<List<Show>> =

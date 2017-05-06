@@ -1,16 +1,16 @@
-package com.mohamadamin.cleantvmaze.data.repository.show;
+package com.mohamadamin.cleantvmaze.data.test.repository.show;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mohamadamin.cleantvmaze.data.utils.TrampolineSchedulerRule;
+import com.mohamadamin.cleantvmaze.data.test.utils.TrampolineSchedulerRule;
 import com.mohamadamin.cleantvmaze.domain.entity.Episode;
 import com.mohamadamin.cleantvmaze.domain.entity.Season;
 import com.mohamadamin.cleantvmaze.domain.entity.Show;
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.InsertShowDataSource;
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource;
-import com.mohamadamin.cleantvmaze.network.utils.ResourceReader;
+import com.mohamadamin.cleantvmaze.network.test.utils.ResourceReader;
 
 import org.junit.Before;
 import org.junit.Rule;

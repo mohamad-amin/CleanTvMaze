@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.domain.annotation
+package com.mohamadamin.cleantvmaze.data.annotation
 
 import javax.inject.Scope
 

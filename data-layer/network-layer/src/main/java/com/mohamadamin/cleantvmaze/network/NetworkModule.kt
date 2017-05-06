@@ -3,9 +3,10 @@ package com.mohamadamin.cleantvmaze.data.network
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.mohamadamin.cleantvmaze.domain.utils.Constants
 import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource
-import com.mohamadamin.cleantvmaze.network.datasource.NetworkShowDataSource
+import com.mohamadamin.cleantvmaze.domain.utils.Constants
+import com.mohamadamin.cleantvmaze.network.api.ShowsAPI
+import com.mohamadamin.cleantvmaze.network.datasource.NetworkShowDatasource
 import dagger.Module
 import dagger.Provides
 import retrofit2.Converter
@@ -28,8 +29,8 @@ class NetworkModule {
 
     @Provides
     @Named(Constants.DATASOURCE_NETWORK)
-    fun provideNetworkShowDataSource(showsAPI: ShowsAPI): RetrieveShowDataSource =
-            NetworkShowDataSource(showsAPI)
+    fun provideNetworkShowDataSource(showsApi: ShowsAPI): RetrieveShowDataSource =
+            NetworkShowDatasource(showsApi)
 
     @Provides
     fun provideShowsAPI(retrofit: Retrofit): ShowsAPI =

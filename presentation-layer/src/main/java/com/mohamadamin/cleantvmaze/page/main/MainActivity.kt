@@ -8,18 +8,41 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.mohamadamin.cleantvmaze.R
+import com.mohamadamin.cleantvmaze.base.BaseActivity
+import com.mohamadamin.cleantvmaze.base.di.ApplicationComponent
+import com.mohamadamin.cleantvmaze.domain.entity.Show
 import easymvp.annotation.ActivityView
+import easymvp.annotation.Presenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import javax.inject.Inject
 
 @ActivityView(presenter = MainPresenter::class, layout = R.layout.activity_main)
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, MainView {
 
-
+    @Inject
+    @Presenter
+    lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupToolbar()
+    }
+
+    override fun injectDependencies(applicationComponent: ApplicationComponent) {
+        applicationComponent.injectTo(this)
+    }
+
+    override fun showShows(shows: List<Show>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showNetworkError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun showLoadingShows() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**

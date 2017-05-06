@@ -4,11 +4,12 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mohamadamin.cleantvmaze.data.network.ShowsAPI;
 import com.mohamadamin.cleantvmaze.domain.entity.Episode;
 import com.mohamadamin.cleantvmaze.domain.entity.Season;
 import com.mohamadamin.cleantvmaze.domain.entity.Show;
-import com.mohamadamin.cleantvmaze.network.utils.ResourceReader;
+import com.mohamadamin.cleantvmaze.domain.repository.datasource.RetrieveShowDataSource;
+import com.mohamadamin.cleantvmaze.network.api.ShowsAPI;
+import com.mohamadamin.cleantvmaze.network.test.utils.ResourceReader;
 
 import org.junit.After;
 import org.junit.Before;
@@ -34,7 +35,7 @@ public class NetworkShowDataSourceTest {
     private static final String SHOW_ID = "1";
     private static final String QUERY = "girls";
 
-    private NetworkShowDataSource dataSource;
+    private RetrieveShowDataSource dataSource;
     private MockWebServer server;
     private Gson gson;
 
@@ -58,7 +59,7 @@ public class NetworkShowDataSourceTest {
                 .baseUrl(server.url("/").toString())
                 .build();
 
-        dataSource = new NetworkShowDataSource(retrofit.create(ShowsAPI.class));
+        dataSource = new NetworkShowDatasource(retrofit.create(ShowsAPI.class));
 
     }
 

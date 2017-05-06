@@ -14,7 +14,7 @@ import timber.log.Timber
 class AppController: Application() {
 
     companion object {
-        var applicationComponent by DelegatesExt.notNullSingleValue<ApplicationComponent>()
+        var applicationComponent: ApplicationComponent by DelegatesExt.notNullSingleValue<ApplicationComponent>()
     }
 
     override fun onCreate() {

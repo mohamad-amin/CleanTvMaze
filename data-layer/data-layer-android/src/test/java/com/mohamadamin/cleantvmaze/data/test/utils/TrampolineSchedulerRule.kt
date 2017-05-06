@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.data.utils
+package com.mohamadamin.cleantvmaze.data.test.utils
 
 import org.junit.rules.TestRule
 import org.junit.runner.Description

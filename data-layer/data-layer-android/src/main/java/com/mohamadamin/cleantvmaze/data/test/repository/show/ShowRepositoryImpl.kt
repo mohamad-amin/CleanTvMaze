@@ -1,4 +1,4 @@
-package com.mohamadamin.cleantvmaze.data.repository.show
+package com.mohamadamin.cleantvmaze.data.test.repository.show
 
 import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Season
@@ -11,7 +11,6 @@ import rx.Observable
 import rx.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Named
-import javax.inject.Singleton
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.

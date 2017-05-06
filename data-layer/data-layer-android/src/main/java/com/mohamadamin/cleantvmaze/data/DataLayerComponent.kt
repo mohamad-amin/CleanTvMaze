@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.mohamadamin.cleantvmaze.data.executor.ExecutorModule
 import com.mohamadamin.cleantvmaze.data.interactor.UseCaseModule
 import com.mohamadamin.cleantvmaze.data.network.NetworkModule
-import com.mohamadamin.cleantvmaze.data.repository.RepositoryModule
+import com.mohamadamin.cleantvmaze.data.test.repository.RepositoryModule
 import com.mohamadamin.cleantvmaze.database.DatabaseModule
 import com.mohamadamin.cleantvmaze.domain.interactor.GetShowDetailUseCase
 import com.mohamadamin.cleantvmaze.domain.interactor.GetShowsUseCase

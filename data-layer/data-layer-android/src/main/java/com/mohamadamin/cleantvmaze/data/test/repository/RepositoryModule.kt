@@ -1,6 +1,6 @@
-package com.mohamadamin.cleantvmaze.data.repository
+package com.mohamadamin.cleantvmaze.data.test.repository
 
-import com.mohamadamin.cleantvmaze.data.repository.show.ShowRepositoryImpl
+import com.mohamadamin.cleantvmaze.data.test.repository.show.ShowRepositoryImpl
 import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository
 import dagger.Module
 import dagger.Provides
