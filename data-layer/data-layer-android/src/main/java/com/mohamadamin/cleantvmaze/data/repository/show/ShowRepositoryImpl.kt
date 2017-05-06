@@ -16,7 +16,6 @@ import javax.inject.Singleton
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
 */
-@Singleton
 class ShowRepositoryImpl: ShowRepository {
 
     private lateinit var networkRetrieveDataSource: RetrieveShowDataSource

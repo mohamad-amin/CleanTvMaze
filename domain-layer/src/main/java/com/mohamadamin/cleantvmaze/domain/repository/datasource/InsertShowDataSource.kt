@@ -9,7 +9,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-interface InsertShowDataSource {
+public interface InsertShowDataSource {
 
     fun insertShows(shows: List<Show>): Completable
 

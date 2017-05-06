@@ -7,7 +7,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-interface PeopleRepository {
+public interface PeopleRepository {
 
     fun getPeople(): Observable<List<People>>
 

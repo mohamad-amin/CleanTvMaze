@@ -22,7 +22,7 @@ import easymvp.executer.UseCaseExecutor
         NetworkModule::class,
         RepositoryModule::class
 ))
-interface DataLayerComponent {
+public interface DataLayerComponent {
 
     fun provideGetShowsUseCase(): GetShowsUseCase
 

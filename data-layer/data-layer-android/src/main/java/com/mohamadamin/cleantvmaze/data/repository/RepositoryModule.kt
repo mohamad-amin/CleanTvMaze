@@ -1,6 +1,7 @@
 package com.mohamadamin.cleantvmaze.data.repository
 
 import com.mohamadamin.cleantvmaze.data.repository.show.ShowRepositoryImpl
+import com.mohamadamin.cleantvmaze.domain.repository.ShowRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -13,7 +14,7 @@ import javax.inject.Singleton
 class RepositoryModule {
 
     @Provides
-    @Singleton
-    fun provideShowRespository(showRepositoryImpl: ShowRepositoryImpl) = showRepositoryImpl
+    fun provideShowRepository(showRepositoryImpl: ShowRepositoryImpl): ShowRepository =
+            showRepositoryImpl
 
 }

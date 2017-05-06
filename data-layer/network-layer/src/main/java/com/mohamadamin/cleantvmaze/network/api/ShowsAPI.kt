@@ -11,7 +11,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-interface ShowsAPI {
+public interface ShowsAPI {
 
     @GET("/shows")
     fun getShows(@Query("page") page: Int): Observable<List<Show>>

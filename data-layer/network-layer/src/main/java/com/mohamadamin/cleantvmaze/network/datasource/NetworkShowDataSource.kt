@@ -12,8 +12,7 @@ import javax.inject.Singleton
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-@Singleton
-class NetworkShowDataSource: RetrieveShowDataSource {
+public class NetworkShowDataSource: RetrieveShowDataSource {
 
     private var showsApi: ShowsAPI
 

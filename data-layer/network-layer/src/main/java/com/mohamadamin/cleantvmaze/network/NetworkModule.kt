@@ -32,24 +32,21 @@ class NetworkModule {
             NetworkShowDataSource(showsAPI)
 
     @Provides
-    fun provideShowsAPI(retrofit: Retrofit) =
+    fun provideShowsAPI(retrofit: Retrofit): ShowsAPI =
             retrofit.create(ShowsAPI::class.java)
 
-    @Singleton
     @Provides
-    fun provideRetrofit(converterFactory: Converter.Factory) =
+    fun provideRetrofit(converterFactory: Converter.Factory): Retrofit =
             Retrofit.Builder()
                 .baseUrl(URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(converterFactory)
                 .build()
 
-    @Singleton
     @Provides
     fun provideConverterFactory(gson: Gson): Converter.Factory =
             GsonConverterFactory.create(gson)
 
-    @Singleton
     @Provides
     fun provideGson(): Gson =
             GsonBuilder().setVersion(GSON_VERSION)

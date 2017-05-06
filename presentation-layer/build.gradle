@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'easymvp'
 
 android {
@@ -24,16 +24,12 @@ android {
 
     buildTypes {
         release {
-            debuggable false
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            debuggable true
             minifyEnabled false
-            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -61,6 +57,11 @@ android {
         abortOnError false
     }
 
+    compileOptions {
+        targetCompatibility = '1.7'
+        sourceCompatibility = '1.7'
+    }
+
 }
 
 kapt {
@@ -82,6 +83,10 @@ dependencies {
     compile libraries.appDesign
     compile libraries.recyclerViewV7
     compile libraries.constraintLayout
+
+    // Dagger
+    compile libraries.dagger
+    kapt libraries.daggerCompiler
 
     // ButterKnife
     compile libraries.butterKnife

@@ -23,7 +23,6 @@ import javax.inject.Singleton
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-@Singleton
 class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
 
     private lateinit var showDomainToDatabaseMapper: ShowDomainToDatabaseMapper

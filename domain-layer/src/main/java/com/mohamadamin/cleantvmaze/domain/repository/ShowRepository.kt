@@ -8,7 +8,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-interface ShowRepository {
+public interface ShowRepository {
 
     fun getShows(page: Int): Observable<List<Show>>
 

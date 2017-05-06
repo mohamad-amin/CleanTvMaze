@@ -2,6 +2,11 @@ package com.mohamadamin.cleantvmaze.app
 
 import android.app.Application
 import com.mohamadamin.cleantvmaze.base.di.ApplicationComponent
+import com.mohamadamin.cleantvmaze.base.di.ApplicationModule
+import com.mohamadamin.cleantvmaze.base.di.DaggerApplicationComponent
+import com.mohamadamin.cleantvmaze.data.DaggerDataLayerComponent
+import com.mohamadamin.cleantvmaze.data.delegates.DelegatesExt
+import timber.log.Timber
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/6/17.
@@ -9,17 +14,20 @@ import com.mohamadamin.cleantvmaze.base.di.ApplicationComponent
 class AppController: Application() {
 
     companion object {
-        lateinit var applicationComponent: ApplicationComponent
+        var applicationComponent by DelegatesExt.notNullSingleValue<ApplicationComponent>()
     }
 
     override fun onCreate() {
         super.onCreate()
         prepareApplicationComponent()
+        Timber.plant(Timber.DebugTree())
     }
 
     fun prepareApplicationComponent() {
-
+        applicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(ApplicationModule(this))
+                .dataLayerComponent(DaggerDataLayerComponent.builder().build())
+                .build()
     }
-
 
 }

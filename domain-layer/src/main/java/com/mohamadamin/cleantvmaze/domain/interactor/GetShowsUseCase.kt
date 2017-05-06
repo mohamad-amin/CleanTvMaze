@@ -10,7 +10,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/1/17.
  */
-class GetShowsUseCase(useCaseExecutor: UseCaseExecutor,
+public class GetShowsUseCase(useCaseExecutor: UseCaseExecutor,
                            postThread: PostExecutionThread, private val showRepository: ShowRepository) :
         ObservableUseCase<List<Show>, Int>(useCaseExecutor, postThread) {
 

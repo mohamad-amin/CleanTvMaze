@@ -8,7 +8,7 @@ import rx.Observable
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.
  */
-interface RetrieveShowDataSource {
+public interface RetrieveShowDataSource {
 
     fun getShows(page: Int): Observable<List<Show>>
 
