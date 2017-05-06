@@ -28,7 +28,7 @@ interface DataLayerComponent {
 
     fun provideGetShowDetailUseCase(): GetShowDetailUseCase
 
-    fun proivdeUseCaseExecutor(): UseCaseExecutor
+    fun provideUseCaseExecutor(): UseCaseExecutor
 
     fun providePostExecutionThread(): PostExecutionThread
 
