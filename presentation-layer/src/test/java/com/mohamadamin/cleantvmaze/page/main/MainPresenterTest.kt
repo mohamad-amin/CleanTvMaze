@@ -37,7 +37,6 @@ class MainPresenterTest {
     internal var mainView: MainView? = null
 
     internal var mainPresenter: MainPresenter? = null
-
     private var shows: Observable<List<Show>>? = null
     private var showsList: List<Show>? = null
 
@@ -49,12 +48,9 @@ class MainPresenterTest {
                 .create()
 
         showsList = gson.fromJson<List<Show>>(ResourceReader.getJsonFromResource(
-                "json_shows_ok.json", javaClass.classLoader), object : TypeToken<List<Show>>() {
-
-        }.type)
+                "json_shows_ok.json", javaClass.classLoader), object : TypeToken<List<Show>>() {}.type)
 
         shows = Observable.just<List<Show>>(showsList)
-
         mainPresenter = MainPresenter(getShowsUseCase!!)
 
     }
@@ -79,7 +75,6 @@ class MainPresenterTest {
     fun onViewAttachedFalse() {
 
         val exception: Exception = Exception("Fuck you")
-
         `when`(getShowsUseCase!!.execute(PAGE)).thenThrow(exception)
 
         mainPresenter!!.onViewAttached(mainView)
@@ -94,9 +89,7 @@ class MainPresenterTest {
     }
 
     companion object {
-
         val PAGE = 1
-
         fun <T> createAnswer(value: T): Answer<T> {
             return Answer { value }
         }

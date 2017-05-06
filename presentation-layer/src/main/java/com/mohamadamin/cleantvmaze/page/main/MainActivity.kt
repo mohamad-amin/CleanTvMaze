@@ -52,7 +52,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
      * Setting [nav_view]'s item click listener.
      */
     fun setupToolbar() {
-
         setSupportActionBar(toolbar)
 
         val toggle = ActionBarDrawerToggle(
@@ -61,7 +60,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-
     }
 
     /**
@@ -89,7 +87,6 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
-
 
         if (id == R.id.action_settings) {
             return true
