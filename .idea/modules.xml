@@ -3,7 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/CleanTvMaze.iml" filepath="$PROJECT_DIR$/CleanTvMaze.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-layer/data-layer-android/data-layer-android.iml" filepath="$PROJECT_DIR$/data-layer/data-layer-android/data-layer-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-layer-android/data-layer-android.iml" filepath="$PROJECT_DIR$/data-layer-android/data-layer-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-layer/database-layer/database-layer.iml" filepath="$PROJECT_DIR$/data-layer/database-layer/database-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/domain-layer/domain-layer.iml" filepath="$PROJECT_DIR$/domain-layer/domain-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-layer/network-layer/network-layer.iml" filepath="$PROJECT_DIR$/data-layer/network-layer/network-layer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/presentation-layer/presentation-layer.iml" filepath="$PROJECT_DIR$/presentation-layer/presentation-layer.iml" />
     </modules>
   </component>
 </project>

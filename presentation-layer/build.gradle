@@ -1,0 +1,148 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'easymvp'
+
+android {
+
+    compileSdkVersion cleantvmaze.compileSdk
+    buildToolsVersion cleantvmaze.buildTools
+
+    defaultConfig {
+
+        applicationId cleantvmaze.applicationId
+        minSdkVersion cleantvmaze.minSdk
+        targetSdkVersion cleantvmaze.targetSdk
+        versionCode cleantvmaze.versionCode
+        versionName cleantvmaze.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //Add version name and code to generated apks
+        archivesBaseName = "cleantvmaze-${cleantvmaze.versionName}-${cleantvmaze.versionCode}"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'asm-license.txt'
+    }
+
+    //organizing resource folders
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res/shows',
+                           'src/main/res/showdetail',
+                           'src/main/res'
+            ]
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        targetCompatibility = '1.7'
+        sourceCompatibility = '1.7'
+    }
+
+}
+
+kapt {
+    generateStubs = true
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.findbugs:jsr305:1.3.9', 'com.google.code.findbugs:jsr305:2.0.1'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':data-layer-android')
+
+    // Support
+    compile libraries.cardViewV7
+    compile libraries.appDesign
+    compile libraries.recyclerViewV7
+    compile libraries.constraintLayout
+
+    // Dagger
+    compile libraries.dagger
+    kapt libraries.daggerCompiler
+
+    // ButterKnife
+    compile libraries.butterKnife
+    kapt libraries.butterKnifeCompiler
+
+    // Glide
+    compile libraries.glide
+    compile libraries.supportV4
+
+    compile libraries.permDispatcher
+    kapt libraries.permDispatcherApt
+
+    // LeakCanary
+    debugCompile libraries.leakCanaryDebug
+    releaseCompile libraries.leakCanaryRelease
+    testCompile libraries.leakCanaryRelease
+
+    // Unit Testing dependencies
+    testCompile libraries.junit
+    testCompile libraries.mockito
+    testCompile libraries.hamcrest
+    testCompile libraries.powermockJunit
+    testCompile libraries.powermockMockito
+
+    // Android Testing Support Library's runner and rules
+    androidTestCompile libraries.androidTestRunner
+    androidTestCompile libraries.androidTestRules
+
+    // Espresso UI Testing dependencies.
+    androidTestCompile(libraries.espressoCore, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile libraries.espressoContrib
+    androidTestCompile libraries.espressoIntents
+    androidTestCompile libraries.espressoIdling
+
+}
+
+/*
+Resolves dependency versions across test and production APKs, specifically, transitive
+dependencies. This is required since Espresso internally has a dependency on support-annotations.
+*/
+configurations.all {
+    resolutionStrategy.force "com.android.support:support-annotations:$versions.androidSupport"
+}
+
+/*
+All direct/transitive dependencies shared between your test and production APKs need to be
+excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+excluding these dependencies from your test configuration will result in an dex pre-verifier error
+at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)
+*/
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+}
+configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+}

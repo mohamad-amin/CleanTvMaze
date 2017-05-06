@@ -1,1 +1,12 @@
-include ':app'
+include ':presentation-layer',
+        ':domain-layer',
+        'data-layer/data-layer-android',
+        'data-layer/database-layer',
+        'data-layer/network-layer'
+
+rootProject.children.each { project ->
+    if (project.name.startsWith("data-layer/")) {
+        int slash = project.name.indexOf("/")
+        project.name = project.name.substring(slash + 1)
+    }
+}
