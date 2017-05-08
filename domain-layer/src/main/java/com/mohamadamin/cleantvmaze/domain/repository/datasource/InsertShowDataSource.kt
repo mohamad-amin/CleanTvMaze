@@ -4,7 +4,6 @@ import com.mohamadamin.cleantvmaze.domain.entity.Episode
 import com.mohamadamin.cleantvmaze.domain.entity.Season
 import com.mohamadamin.cleantvmaze.domain.entity.Show
 import rx.Completable
-import rx.Observable
 
 /**
  * @author MohamadAmin Mohamadi (mohammadi.mohamadamin@gmail.com) on 5/2/17.

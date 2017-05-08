@@ -1,20 +1,25 @@
 package com.mohamadamin.cleantvmaze.page.main
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.mohamadamin.cleantvmaze.R
 import com.mohamadamin.cleantvmaze.base.BaseActivity
 import com.mohamadamin.cleantvmaze.base.di.ApplicationComponent
 import com.mohamadamin.cleantvmaze.domain.entity.Show
+import com.mohamadamin.cleantvmaze.view.SpaceItemDecoration
 import easymvp.annotation.ActivityView
 import easymvp.annotation.Presenter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.no_connection.*
+import timber.log.Timber
 import javax.inject.Inject
 
 @ActivityView(presenter = MainPresenter::class, layout = R.layout.activity_main)
@@ -24,9 +29,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     @Presenter
     lateinit var presenter: MainPresenter
 
+    private lateinit var mainAdapter: MainAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.mainAdapter = MainAdapter(this)
         setupToolbar()
+        setupActions()
+        setAdapter()
     }
 
     override fun injectDependencies(applicationComponent: ApplicationComponent) {
@@ -34,15 +44,28 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun showShows(shows: List<Show>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        main_internet.visibility = View.GONE
+        main_recycler.visibility = View.VISIBLE
+        main_refresh_layout.isRefreshing = false
+        mainAdapter.shows = shows
+        Timber.i("Show shows")
     }
 
     override fun showNetworkError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        main_recycler.visibility = View.GONE
+        main_internet.visibility = View.VISIBLE
+        main_refresh_layout.isRefreshing = false
+        Timber.i("Show network error")
     }
 
-    override fun showLoadingShows() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showLoadingShows(refresh: Boolean) {
+        if (refresh) {
+            main_internet.visibility = View.GONE
+        } else {
+            setVisibility(View.GONE, main_recycler, main_internet)
+        }
+        main_refresh_layout.isRefreshing = true
+        Timber.i("Show loading shows")
     }
 
     /**
@@ -61,6 +84,27 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         nav_view.setNavigationItemSelectedListener(this)
     }
+
+    /**
+     * Responding to item click in this activity
+     */
+    fun setupActions() {
+        internet_retry.setOnClickListener { presenter.loadShows(true) }
+        main_refresh_layout.setOnRefreshListener { presenter.loadShows(true) }
+    }
+
+    /**
+     * Setting an adapter and some fancy item decorations to the [main_recycler] view
+     */
+    fun setAdapter() {
+        val space = resources.getDimensionPixelSize(R.dimen.space)
+        main_recycler.adapter = mainAdapter
+        if (main_recycler.tag == null || main_recycler.tag as Int != space) {
+            main_recycler.addItemDecoration(SpaceItemDecoration(space))
+            main_recycler.tag = space
+        }
+    }
+
 
     /**
      * This function closes the [drawer_layout] if it is open
@@ -119,4 +163,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true
 
     }
+
+    fun Context.setVisibility(visibility: Int, vararg view: View) = view.iterator().forEach {
+        it.visibility = visibility
+    }
+
 }

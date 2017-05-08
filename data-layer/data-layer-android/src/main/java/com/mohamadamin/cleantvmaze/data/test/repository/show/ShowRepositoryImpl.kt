@@ -17,9 +17,9 @@ import javax.inject.Named
 */
 class ShowRepositoryImpl: ShowRepository {
 
-    private lateinit var networkRetrieveDataSource: RetrieveShowDataSource
-    private lateinit var realmRetrieveDataSource: RetrieveShowDataSource
-    private lateinit var realmInsertDataSource: InsertShowDataSource
+    private var networkRetrieveDataSource: RetrieveShowDataSource
+    private var realmRetrieveDataSource: RetrieveShowDataSource
+    private var realmInsertDataSource: InsertShowDataSource
 
     @Inject
     constructor(@Named(Constants.DATASOURCE_NETWORK) networkRetrieveShowDataSource: RetrieveShowDataSource,
@@ -32,12 +32,13 @@ class ShowRepositoryImpl: ShowRepository {
 
     override fun getShows(page: Int): Observable<List<Show>> =
             Observable.concat(
-                    realmRetrieveDataSource.getShows(page)
-                            .subscribeOn(Schedulers.computation()),
-                    networkRetrieveDataSource.getShows(page).doOnNext {
-                        realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
-                    }.subscribeOn(Schedulers.io())
-            ).first()
+                    realmRetrieveDataSource.getShows(page).subscribeOn(Schedulers.computation()),
+                    networkRetrieveDataSource.getShows(page)
+                            .subscribeOn(Schedulers.io())
+                            .doOnNext {
+                                realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
+                            }
+            ).filter { t: List<Show> -> !t.isEmpty() }.first()
 
 
     override fun getShow(showId: String): Observable<Show> =
@@ -50,8 +51,8 @@ class ShowRepositoryImpl: ShowRepository {
             Observable.concat(
                     realmRetrieveDataSource.getShowEpisodes(showId)
                             .subscribeOn(Schedulers.computation()),
-                    networkRetrieveDataSource.getShowEpisodes(showId).doOnNext {
-                        realmInsertDataSource.insertEpisodes(showId, it).subscribeOn(Schedulers.computation())
+                    networkRetrieveDataSource.getShowEpisodes(showId).observeOn(Schedulers.computation()).doOnNext {
+                        realmInsertDataSource.insertEpisodes(showId, it)
                     }.subscribeOn(Schedulers.io())
             ).first()
 
@@ -60,7 +61,7 @@ class ShowRepositoryImpl: ShowRepository {
             Observable.concat(
                     realmRetrieveDataSource.getShowSeasons(showId)
                             .subscribeOn(Schedulers.computation()),
-                    networkRetrieveDataSource.getShowSeasons(showId).doOnNext {
+                    networkRetrieveDataSource.getShowSeasons(showId).observeOn(Schedulers.computation()).doOnNext {
                         realmInsertDataSource.insertSeasons(showId, it).subscribeOn(Schedulers.computation())
                     }.subscribeOn(Schedulers.io())
             ).first()
@@ -75,7 +76,7 @@ class ShowRepositoryImpl: ShowRepository {
             Observable.concat(
                     realmRetrieveDataSource.searchShows(query)
                             .subscribeOn(Schedulers.computation()),
-                    networkRetrieveDataSource.searchShows(query).doOnNext {
+                    networkRetrieveDataSource.searchShows(query).observeOn(Schedulers.computation()).doOnNext {
                         realmInsertDataSource.insertShows(it).subscribeOn(Schedulers.computation())
                     }.subscribeOn(Schedulers.io())
             ).first()

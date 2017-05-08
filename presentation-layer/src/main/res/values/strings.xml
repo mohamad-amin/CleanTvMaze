@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    
+    <string name="internet_title">No Connection :(</string>
+    <string name="internet_description">No interent connection was found, please connect your device to the internet and then try again.</string>
+    <string name="internet_retry">Retry</string>
+    
 </resources>

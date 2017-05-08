@@ -6,6 +6,7 @@ import com.mohamadamin.cleantvmaze.base.di.ApplicationModule
 import com.mohamadamin.cleantvmaze.base.di.DaggerApplicationComponent
 import com.mohamadamin.cleantvmaze.data.DaggerDataLayerComponent
 import com.mohamadamin.cleantvmaze.data.delegates.DelegatesExt
+import io.realm.Realm
 import timber.log.Timber
 
 /**
@@ -19,8 +20,9 @@ class AppController: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        prepareApplicationComponent()
         Timber.plant(Timber.DebugTree())
+        prepareApplicationComponent()
+        Realm.init(this)
     }
 
     fun prepareApplicationComponent() {
@@ -28,6 +30,10 @@ class AppController: Application() {
                 .applicationModule(ApplicationModule(this))
                 .dataLayerComponent(DaggerDataLayerComponent.builder().build())
                 .build()
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
     }
 
 }

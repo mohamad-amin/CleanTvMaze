@@ -11,6 +11,6 @@ interface MainView {
 
     fun showNetworkError()
 
-    fun showLoadingShows()
+    fun showLoadingShows(refresh: Boolean = false)
 
 }

@@ -17,6 +17,7 @@ import io.realm.Realm
 import rx.Completable
 import rx.Observable
 import rx.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,10 +26,10 @@ import javax.inject.Singleton
  */
 class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
 
-    private lateinit var showDomainToDatabaseMapper: ShowDomainToDatabaseMapper
-    private lateinit var showDatabaseToDomainMapper: ShowDatabaseToDomainMapper
-    private lateinit var seasonDatabaseToDomainMapper: SeasonDatabaseToDomainMapper
-    private lateinit var episodeDatabaseToDomainMapper: EpisodeDatabaseToDomainMapper
+    private var showDomainToDatabaseMapper: ShowDomainToDatabaseMapper
+    private var showDatabaseToDomainMapper: ShowDatabaseToDomainMapper
+    private var seasonDatabaseToDomainMapper: SeasonDatabaseToDomainMapper
+    private var episodeDatabaseToDomainMapper: EpisodeDatabaseToDomainMapper
 
     @Inject
     constructor(showDomainToDB: ShowDomainToDatabaseMapper, showDbToDomain: ShowDatabaseToDomainMapper,
@@ -42,11 +43,11 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
     override fun insertShows(shows: List<Show>): Completable {
         return Completable.fromAction {
             val realm = Realm.getDefaultInstance()
+            Timber.i("Writing in thread ${Thread.currentThread().name}")
             realm.executeTransaction {
                 Observable.from(shows).map(showDomainToDatabaseMapper)
                         .forEach { realmShow -> it.copyToRealm(realmShow) }
             }
-            realm.close()
         }
     }
 
@@ -62,7 +63,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                                     RealmShowImageUrl(episode.image.medium, episode.image.original))
                         }.forEach { realmEpisode -> it.copyToRealm(realmEpisode) }
             }
-            realm.close()
         }
     }
 
@@ -78,26 +78,24 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                         }
                         .forEach { realmSeason -> it.copyToRealm(realmSeason) }
             }
-            realm.close()
         }
     }
 
     /**
-     * Todo: Implement pages
+     * Todo: Implement pages ?
      */
-    override fun getShows(page: Int): Observable<List<Show>> {
-        val realm = Realm.getDefaultInstance()
-        val shows = realm.where(RealmShow::class.java)
-                .findAll()
-                .asObservable()
-                .flatMap { realmResults ->
-                    Observable.from(realmResults)
-                            .map(showDatabaseToDomainMapper)
-                            .toList()
-                }
-        realm.close()
-        return shows
-    }
+    override fun getShows(page: Int): Observable<List<Show>> =
+            Observable.defer {
+                Timber.i("Getting shows on ${Thread.currentThread().name} thread")
+                Observable.just(Realm.getDefaultInstance())
+            }.flatMap {
+                Observable.just(it.where(RealmShow::class.java).findAll())
+                        .flatMap {
+                            Observable.from(it)
+                                    .map(showDatabaseToDomainMapper)
+                                    .toList()
+                        }
+            }
 
     override fun getShow(showId: String): Observable<Show> {
         val realm = Realm.getDefaultInstance()
@@ -106,7 +104,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .findFirst()
                 .asObservable<RealmShow>()
                 .map(showDatabaseToDomainMapper)
-        realm.close()
         return show
     }
 
@@ -121,7 +118,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                             .map(episodeDatabaseToDomainMapper)
                             .toList()
                 }
-        realm.close()
         return episodes
     }
 
@@ -136,7 +132,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                             .map(seasonDatabaseToDomainMapper)
                             .toList()
                 }
-        realm.close()
         return seasons
     }
 
@@ -149,7 +144,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                 .findFirst()
                 .asObservable<RealmShow>()
                 .map(showDatabaseToDomainMapper)
-        realm.close()
         return show
     }
 
@@ -166,7 +160,6 @@ class RealmShowDataSource: RetrieveShowDataSource, InsertShowDataSource {
                             .map(showDatabaseToDomainMapper)
                             .toList()
                 }
-        realm.close()
         return shows
     }
 

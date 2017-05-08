@@ -17,6 +17,7 @@ android {
         versionCode cleantvmaze.versionCode
         versionName cleantvmaze.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
 
         //Add version name and code to generated apks
         archivesBaseName = "cleantvmaze-${cleantvmaze.versionName}-${cleantvmaze.versionCode}"
